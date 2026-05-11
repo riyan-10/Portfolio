@@ -2,101 +2,99 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { LetterReveal } from "@/components/animations/LetterReveal";
 
 export function LoadingScreen() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    // Cinematic timing: starts fast, slows down at the end for suspense
-    const duration = 2800;
-    const interval = 20;
-    const steps = duration / interval;
-    let currentStep = 0;
-
-    const timer = setInterval(() => {
-      currentStep++;
-      // Custom easing curve simulation
-      const easeOutExpo = (x: number): number => {
-        return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
-      };
-      
-      const rawProgress = currentStep / steps;
-      const easedProgress = Math.min(Math.round(easeOutExpo(rawProgress) * 100), 100);
-      
-      setProgress(easedProgress);
-
-      if (currentStep >= steps || easedProgress === 100) {
-        clearInterval(timer);
-        setTimeout(() => setIsLoading(false), 800); // Suspense pause at 100%
-      }
-    }, interval);
-
-    return () => clearInterval(timer);
+    // Cinematic timeline orchestration
+    // Stage 0: Initial black screen (0-1s)
+    // Stage 1: Atmosphere & Initialization text (1s-2.5s)
+    // Stage 2: Main typography assembly (2.5s-4.5s)
+    // Stage 3: Exit transition begins (4.5s)
+    
+    const t1 = setTimeout(() => setStage(1), 800);
+    const t2 = setTimeout(() => setStage(2), 2400);
+    const t3 = setTimeout(() => setStage(3), 4800); // 4.8 seconds total intro duration
+    
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, []);
 
   return (
     <AnimatePresence>
-      {isLoading && (
+      {stage < 3 && (
         <motion.div
-          className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#050505] text-white overflow-hidden"
+          className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#020202] text-white overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
-            scale: 1.05,
-            filter: "blur(10px)",
-            transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] } 
+            scale: 1.1,
+            filter: "blur(20px)",
+            transition: { duration: 1.8, ease: [0.16, 1, 0.3, 1] } 
           }}
         >
           {/* Subtle noise texture overlay */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+          <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat mix-blend-overlay" />
 
-          <div className="relative flex flex-col items-center z-10 w-full max-w-sm px-6">
-            <div className="overflow-hidden mb-8">
-              <motion.div
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: [0.33, 1, 0.68, 1] }}
-                className="text-xs uppercase tracking-[0.4em] text-white/40 font-mono"
-              >
-                System Initialization
-              </motion.div>
+          {/* Deep atmospheric glow */}
+          <motion.div 
+            className="absolute inset-0 z-0 opacity-30"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: stage >= 1 ? 0.3 : 0 }}
+            transition={{ duration: 2, ease: "easeInOut" }}
+            style={{
+              background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 60%)"
+            }}
+          />
+
+          <div className="relative z-10 flex flex-col items-center justify-center w-full px-6">
+            
+            {/* Stage 1: Micro Telemetry */}
+            <div className="h-8 mb-12 flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                {stage === 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, filter: "blur(4px)", y: -10 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-[9px] uppercase tracking-[0.5em] text-white/30 font-mono flex items-center gap-4"
+                  >
+                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                    Initializing Environment
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            <div className="relative w-full flex justify-between items-end mb-4">
-              <motion.span 
-                className="text-5xl md:text-7xl font-light tracking-tighter tabular-nums"
-                initial={{ opacity: 0, filter: "blur(10px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                transition={{ duration: 1.5 }}
-              >
-                {progress}
-              </motion.span>
-              <span className="text-xl md:text-2xl text-white/30 mb-2">%</span>
+            {/* Stage 2: Main Cinematic Typography */}
+            <div className="h-24 flex items-center justify-center overflow-hidden">
+              <AnimatePresence>
+                {stage === 2 && (
+                  <motion.div 
+                    className="flex flex-col items-center"
+                    exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <LetterReveal 
+                      text="Creative" 
+                      className="text-4xl md:text-6xl font-light tracking-widest uppercase text-white/50 mb-2" 
+                    />
+                    <LetterReveal 
+                      text="Engineering." 
+                      delay={0.8} 
+                      className="text-4xl md:text-6xl font-bold tracking-tighter text-white" 
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-
-            {/* Precision progress bar */}
-            <div className="h-[1px] w-full bg-white/10 relative overflow-hidden">
-              <motion.div
-                className="absolute top-0 left-0 bottom-0 bg-white"
-                initial={{ width: "0%" }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.1, ease: "linear" }}
-              />
-              {/* Glitch highlight traversing the bar */}
-              <motion.div 
-                className="absolute top-0 bottom-0 w-12 bg-white/50 blur-[2px]"
-                animate={{
-                  left: ["-10%", "110%"],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 2,
-                  ease: "easeInOut",
-                  repeatDelay: 1
-                }}
-              />
-            </div>
+            
           </div>
         </motion.div>
       )}

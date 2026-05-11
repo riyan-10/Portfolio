@@ -3,9 +3,9 @@
 import { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 import { RevealText } from "@/components/animations/RevealText";
+import { LetterReveal } from "@/components/animations/LetterReveal";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { MagneticButton } from "@/components/animations/MagneticButton";
-import { ArrowDown } from "lucide-react";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -67,7 +67,7 @@ export function Hero() {
         style={{ y: yText, opacity: opacityText, scale: scaleText }}
         className="relative z-10 flex flex-col items-center text-center px-4 mt-16"
       >
-        <FadeIn delay={1.8} direction="up">
+        <FadeIn delay={5.2} direction="up">
           <div className="flex items-center gap-4 mb-8">
             <div className="h-[1px] w-8 bg-white/20" />
             <p className="text-white/40 tracking-[0.4em] uppercase text-xs font-mono">
@@ -79,21 +79,21 @@ export function Hero() {
 
         {/* Cinematic Typography Choreography */}
         <h1 className="text-5xl md:text-8xl lg:text-[9vw] leading-[0.85] font-bold tracking-tighter mb-10 flex flex-col items-center">
-          <RevealText text="Engineering" delay={2.0} className="justify-center text-white" />
-          <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8">
-            <RevealText text="Digital" delay={2.3} className="text-white/60 italic font-light" />
-            <RevealText text="Realities." delay={2.5} className="text-white" />
+          <LetterReveal text="Engineering" delay={5.4} className="justify-center text-white" />
+          <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
+            <RevealText text="Digital" delay={5.8} className="text-white/60 italic font-light" />
+            <RevealText text="Realities." delay={6.0} className="text-white" />
           </div>
         </h1>
 
-        <FadeIn delay={3.2} direction="up" className="max-w-xl">
+        <FadeIn delay={6.4} direction="up" className="max-w-xl">
           <p className="text-white/50 text-lg md:text-xl font-light leading-relaxed">
             I craft immersive, high-performance web architecture that bridges the gap between raw backend power and cinematic visual design.
           </p>
         </FadeIn>
 
         {/* Magnetic Interactions */}
-        <FadeIn delay={3.8} direction="up" className="mt-12">
+        <FadeIn delay={6.8} direction="up" className="mt-12">
           <MagneticButton intensity={0.4}>
             <button 
               onClick={() => {
@@ -113,7 +113,7 @@ export function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 4.5, duration: 2 }}
+        transition={{ delay: 7.2, duration: 2 }}
       >
         <MagneticButton intensity={0.2} className="flex flex-col items-center gap-6 cursor-pointer">
           <div className="h-16 w-[1px] bg-gradient-to-b from-white/0 via-white/20 to-white/0 relative overflow-hidden">
