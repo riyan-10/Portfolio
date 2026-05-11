@@ -176,10 +176,18 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
 
 function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () => void }) {
   const { setCursorState } = useCursor();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setCursorState("default");
   }, [setCursorState]);
+
+  // Hook into the scroll position of the overlay to drive cinematic background physics
+  const { scrollYProgress } = useScroll({ container: scrollRef });
+  
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.5], [0.2, 0.05]);
 
   return (
     <motion.div 
@@ -200,14 +208,22 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
           <X className="w-5 h-5" />
         </button>
 
-        {/* Cinematic Authentic Background Engine */}
-        <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <Image 
-            src={project.image} 
-            alt={project.title} 
-            fill 
-            className="object-cover object-top opacity-20 grayscale contrast-125 mix-blend-luminosity"
-          />
+        {/* Cinematic Authentic Background Engine with Parallax */}
+        <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-black">
+          <motion.div 
+            style={{ y: bgY, scale: bgScale, opacity: bgOpacity }} 
+            className="absolute inset-0 w-full h-full will-change-transform"
+          >
+            <Image 
+              src={project.image} 
+              alt={project.title} 
+              fill 
+              priority
+              className="object-cover object-top grayscale contrast-125 mix-blend-luminosity"
+            />
+          </motion.div>
+          
+          {/* Atmospheric depth layers */}
           <div className="absolute inset-0 bg-[#050505]/60 z-10" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
           <motion.div 
@@ -215,15 +231,19 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
             animate={{ opacity: [0.3, 0.8, 0.3] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           />
+          
           {/* Deep vignette for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent z-40" />
         </motion.div>
 
         {/* Cinematic Content Reveal */}
-        <div className="relative z-10 w-full h-full overflow-y-auto p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-16 lg:gap-32 scrollbar-hide">
+        <div 
+          ref={scrollRef}
+          className="relative z-10 w-full h-full overflow-y-auto p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-16 lg:gap-32 scrollbar-hide"
+        >
           
-          <div className="flex-1 flex flex-col gap-6 lg:sticky top-0">
+          <div className="flex-1 flex flex-col gap-6 lg:sticky top-0 h-fit">
             <motion.div layoutId={`project-meta-${project.id}`} className="flex items-center gap-4 text-white/40 font-mono text-xs uppercase tracking-widest">
               <span>{project.id}</span>
               <div className="h-[1px] w-12 bg-white/20" />
@@ -251,7 +271,7 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
             </motion.div>
           </div>
 
-          <div className="flex-1 flex flex-col gap-16 text-white/60 text-lg font-light leading-relaxed">
+          <div className="flex-1 flex flex-col gap-16 text-white/60 text-lg font-light leading-relaxed pb-32">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -274,7 +294,7 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.7, duration: 0.8 }}
-              className="p-8 rounded-xl bg-white/5 border border-white/10"
+              className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm"
             >
               <h4 className="text-white font-medium mb-6 uppercase tracking-widest text-xs">Calculated Impact</h4>
               <p className="text-white text-xl">{project.impact}</p>
