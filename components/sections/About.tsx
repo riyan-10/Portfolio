@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
+import Image from "next/image";
 
 export function About() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,7 +24,7 @@ export function About() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-32 md:mb-48 border-b border-white/10 pb-12 gap-8">
             <h2 className="text-4xl md:text-7xl font-bold tracking-tighter">
               Creative <br />
-              <span className="text-white/40 italic font-light">Engineering.</span>
+              <span className="text-white/40 italic font-light">Technologist.</span>
             </h2>
             <p className="text-white/40 text-sm tracking-widest uppercase font-mono max-w-xs text-left md:text-right">
               Bridging the gap between raw backend power and cinematic visual design.
@@ -32,14 +33,28 @@ export function About() {
         </FadeIn>
 
         {/* Asymmetric Split Layout */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-32">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 items-center">
           
-          {/* Left Column: Abstract Parallax Visual */}
-          <motion.div style={{ y: y1 }} className="flex-1 relative aspect-[3/4] md:aspect-square lg:aspect-[3/4] bg-[#0a0a0a] rounded-sm overflow-hidden border border-white/5">
-            {/* Subtle glow / light leak inside the block */}
-            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/[0.03] to-transparent" />
-            <div className="absolute bottom-12 left-12 right-12 text-white/30 font-mono text-[10px] tracking-[0.2em] uppercase flex justify-between">
-              <span>01 / System</span>
+          {/* Left Column: Authentic Profile Image */}
+          <motion.div style={{ y: y1 }} className="flex-1 w-full relative aspect-[3/4] md:aspect-square lg:aspect-[3/4] bg-[#0a0a0a] rounded-sm overflow-hidden border border-white/5">
+            {/* Cinematic Image Integration */}
+            <div className="absolute inset-0 grayscale contrast-125 brightness-75 opacity-80 mix-blend-luminosity">
+              <Image 
+                src="/profile.png" 
+                alt="Riyan Nizar" 
+                fill 
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            </div>
+            
+            {/* Cinematic overlays to blend the image into the dark UI perfectly */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-90" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-transparent opacity-50" />
+            
+            <div className="absolute bottom-12 left-12 right-12 text-white/30 font-mono text-[10px] tracking-[0.2em] uppercase flex justify-between z-10">
+              <span>Riyan Nizar</span>
               <span>Online</span>
             </div>
           </motion.div>
@@ -49,19 +64,19 @@ export function About() {
             
             <FadeIn delay={0.2}>
               <h3 className="text-2xl md:text-4xl font-light tracking-tight leading-snug">
-                I believe that digital experiences should feel <span className="font-bold italic">alive</span>. 
+                I engineer digital environments that feel <span className="font-bold italic">alive</span>. 
               </h3>
             </FadeIn>
 
             <motion.div style={{ y: y2 }} className="space-y-8 text-white/60 text-lg font-light leading-relaxed max-w-lg">
               <FadeIn delay={0.4}>
                 <p>
-                  Transitioning from embedded systems and hardware engineering, I bring a rigorous obsession with performance and memory optimization to the frontend world.
+                  My foundation was built on logic boards and microcontrollers. Transitioning from embedded systems into software engineering gave me a rigorous obsession with optimization, memory management, and absolute precision.
                 </p>
               </FadeIn>
               <FadeIn delay={0.5}>
                 <p>
-                  I don't just build websites; I engineer interactive environments. By leveraging WebGL, complex Framer Motion choreographies, and highly optimized React architectures, I craft experiences that are both visually staggering and technically flawless.
+                  Today, I use that same engineering mindset to build immersive web architectures. I believe that premium digital experiences shouldn't just look beautiful—they should run with the flawless efficiency of compiled hardware logic.
                 </p>
               </FadeIn>
             </motion.div>

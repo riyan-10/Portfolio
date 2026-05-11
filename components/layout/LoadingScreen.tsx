@@ -73,7 +73,7 @@ export function LoadingScreen() {
             </div>
 
             {/* Stage 2: Main Cinematic Typography */}
-            <div className="h-24 flex items-center justify-center overflow-hidden">
+            <div className="h-32 flex items-center justify-center overflow-hidden">
               <AnimatePresence>
                 {stage === 2 && (
                   <motion.div 
@@ -82,13 +82,13 @@ export function LoadingScreen() {
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <LetterReveal 
-                      text="Creative" 
-                      className="text-4xl md:text-6xl font-light tracking-widest uppercase text-white/50 mb-2" 
+                      text="Riyan Nizar." 
+                      className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-4" 
                     />
                     <LetterReveal 
-                      text="Engineering." 
+                      text="Creative Technologist" 
                       delay={0.8} 
-                      className="text-4xl md:text-6xl font-bold tracking-tighter text-white" 
+                      className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/40" 
                     />
                   </motion.div>
                 )}

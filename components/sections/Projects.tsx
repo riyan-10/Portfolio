@@ -1,7 +1,6 @@
 "use client";
 
-"use client";
-
+import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useMotionTemplate, useSpring } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
@@ -11,21 +10,23 @@ import { useCursor } from "@/context/CursorContext";
 const projects = [
   {
     id: "01",
-    title: "Quantum Interface",
-    category: "System Engineering",
-    challenge: "Monitoring highly volatile embedded systems metrics in real-time without locking the main browser thread.",
-    architecture: "Engineered a headless dashboard utilizing WebSockets and WebWorkers to offload data parsing, achieving sub-16ms render cycles.",
-    impact: "Reduced latency by 400% and enabled 60fps telemetry visualization.",
-    tech: ["Next.js", "WebGL", "WebSockets", "Rust (WASM)"],
+    title: "AM Desk Portal",
+    category: "Fullstack Architecture",
+    challenge: "Developing a highly responsive, heavy-data administrative portal without sacrificing UI fluidness or increasing render blocking.",
+    architecture: "Engineered a robust React architecture paired with a customized Node backend, focusing on aggressive state optimization and seamless layout rendering.",
+    impact: "Delivered a zero-latency administrative experience capable of scaling with extreme data loads.",
+    tech: ["React", "Node.js", "Express", "MongoDB"],
+    image: "/projects/amdesk.png"
   },
   {
     id: "02",
-    title: "Aura Architecture",
-    category: "Interactive Design",
-    challenge: "Traditional architectural portfolios fail to convey the scale and lighting of physical structures on a 2D screen.",
-    architecture: "Developed an exploratory engine using custom GLSL shaders to render cinematic, dynamic lighting models directly in the DOM.",
-    impact: "Awarded Site of the Day and increased client engagement duration by 3x.",
-    tech: ["React", "Three.js", "GSAP", "GLSL"],
+    title: "Lexon Commerce",
+    category: "E-Commerce System",
+    challenge: "Modern e-commerce platforms often suffer from layout shifts and sluggish cart state management during high traffic.",
+    architecture: "Built a fully decoupled frontend client using advanced caching strategies and seamless layout transitions for cart operations.",
+    impact: "Resulted in a 40% reduction in bounce rate and an exceptionally smooth transaction flow.",
+    tech: ["Next.js", "Tailwind", "Redux", "Stripe"],
+    image: "/projects/lexon.png"
   },
 ];
 
@@ -139,18 +140,21 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
             style={{ background: spotlight, opacity: isHovered ? 1 : 0 }}
           />
 
-          <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-10 p-8 flex flex-col justify-between opacity-40 group-hover:opacity-80 transition-opacity duration-700">
-            <div className="flex justify-between text-[10px] font-mono text-white/50">
-              <span className="animate-pulse">SYS.OP: STABLE</span>
-              <span>MEM: {42 + (index * 13)}MB / SEC</span>
-            </div>
+          <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-10 overflow-hidden">
+            <div className="absolute inset-0 bg-black/40 mix-blend-multiply z-10" />
+            <Image 
+              src={project.image} 
+              alt={project.title} 
+              fill 
+              className="object-cover object-top opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 grayscale contrast-125"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-20 opacity-90" />
             
-            <div className="absolute inset-0 flex items-center justify-center opacity-20">
-              <motion.div 
-                className="w-[150%] h-[150%] bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:2rem_2rem]"
-                animate={{ rotate: [0, 90], scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
-              />
+            <div className="absolute inset-0 z-30 p-8 flex flex-col justify-between opacity-40 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none">
+              <div className="flex justify-between text-[10px] font-mono text-white/50">
+                <span className="animate-pulse">SYS.OP: STABLE</span>
+                <span>MEM: {42 + (index * 13)}MB / SEC</span>
+              </div>
             </div>
           </motion.div>
         </motion.div>
@@ -196,14 +200,24 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
           <X className="w-5 h-5" />
         </button>
 
-        {/* Abstract Background Engine */}
-        <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        {/* Cinematic Authentic Background Engine */}
+        <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <Image 
+            src={project.image} 
+            alt={project.title} 
+            fill 
+            className="object-cover object-top opacity-20 grayscale contrast-125 mix-blend-luminosity"
+          />
+          <div className="absolute inset-0 bg-[#050505]/60 z-10" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
           <motion.div 
-            className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/[0.05] to-transparent"
+            className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/[0.05] to-transparent z-30"
             animate={{ opacity: [0.3, 0.8, 0.3] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           />
+          {/* Deep vignette for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent z-40" />
         </motion.div>
 
         {/* Cinematic Content Reveal */}
