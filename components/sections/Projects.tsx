@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence, useMotionTemplate, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useMotionTemplate, useSpring, useScroll, useTransform } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { X } from "lucide-react";
 import { useCursor } from "@/context/CursorContext";
