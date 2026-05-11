@@ -1,24 +1,25 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView, Variants } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { motion, Variants } from "framer-motion";
 
 interface RevealTextProps {
   text: string;
-  className?: string;
   delay?: number;
+  className?: string;
 }
 
-export function RevealText({ text, className, delay = 0 }: RevealTextProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
+export function RevealText({ text, delay = 0, className = "" }: RevealTextProps) {
+  // Split words instead of characters for an editorial block reveal
+  const words = text.split(" ");
 
   const container: Variants = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
-      transition: { staggerChildren: 0.03, delayChildren: delay * i },
+      transition: { 
+        staggerChildren: 0.1, 
+        delayChildren: delay * i,
+      },
     }),
   };
 
@@ -26,39 +27,35 @@ export function RevealText({ text, className, delay = 0 }: RevealTextProps) {
     visible: {
       opacity: 1,
       y: 0,
+      rotate: 0,
       transition: {
         type: "spring",
-        damping: 12,
+        damping: 30,
         stiffness: 100,
+        mass: 1.2,
       },
     },
     hidden: {
       opacity: 0,
-      y: 20,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-      },
+      y: 80,
+      rotate: 2, // Subtle editorial tilt during reveal
     },
   };
 
-  const words = text.split(" ");
-
   return (
     <motion.div
-      ref={ref}
-      className={cn("overflow-hidden flex flex-wrap", className)}
+      style={{ overflow: "hidden", display: "flex", flexWrap: "wrap" }}
+      className={className}
       variants={container}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
     >
       {words.map((word, index) => (
         <motion.span
           variants={child}
-          style={{ marginRight: "0.25em" }}
+          style={{ marginRight: "0.25em", display: "inline-block", paddingBottom: "0.1em" }}
           key={index}
-          className="inline-block"
         >
           {word}
         </motion.span>
