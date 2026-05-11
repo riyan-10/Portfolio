@@ -1,0 +1,3 @@
+@echo off
+echo Starting cinematic portfolio...
+npm run dev

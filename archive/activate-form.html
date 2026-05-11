@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate FormSubmit</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; text-align: center; }
+        .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 400px; }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; font-size: 1rem; border-radius: 5px; cursor: pointer; margin-top: 15px; }
+        button:hover { background: #2563eb; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Activate Your Form</h2>
+        <p>Because we built a fancy background-submission for your portfolio, FormSubmit couldn't show you its initial setup screen.</p>
+        <p>Click the button below to do a standard submission. This will take you to FormSubmit's page to complete the setup.</p>
+        <form action="https://formsubmit.co/riyannizar8@gmail.com" method="POST">
+            <input type="hidden" name="Name" value="Riyan Activation">
+            <input type="hidden" name="Email" value="riyannizar8@gmail.com">
+            <input type="hidden" name="Message" value="This is a test message to activate my email.">
+            <button type="submit">Send Activation Test</button>
+        </form>
+    </div>
+</body>
+</html>
