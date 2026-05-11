@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "f
 import { FadeIn } from "@/components/animations/FadeIn";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCursor } from "@/context/CursorContext";
 
 const projects = [
   {
@@ -52,6 +53,7 @@ export function Projects() {
 
 function ProjectShowcase({ project, index }: { project: any; index: number }) {
   const showcaseRef = useRef<HTMLDivElement>(null);
+  const { setCursorState } = useCursor();
   
   // 3D Hover State & Spotlight
   const [isHovered, setIsHovered] = useState(false);
@@ -80,8 +82,14 @@ function ProjectShowcase({ project, index }: { project: any; index: number }) {
     rotateY.set(tiltY);
   };
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    setCursorState("view");
+  };
+
   const handleMouseLeave = () => {
     setIsHovered(false);
+    setCursorState("default");
     rotateX.set(0);
     rotateY.set(0);
   };
@@ -129,7 +137,8 @@ function ProjectShowcase({ project, index }: { project: any; index: number }) {
 
         <FadeIn delay={0.5} className="mt-4">
           <button 
-            data-cursor="hover"
+            onMouseEnter={() => setCursorState("hover")}
+            onMouseLeave={() => setCursorState("default")}
             className="group flex items-center gap-4 text-sm font-medium uppercase tracking-widest hover:text-white/70 transition-colors"
           >
             Read Case Study 
@@ -145,7 +154,7 @@ function ProjectShowcase({ project, index }: { project: any; index: number }) {
         <motion.div
           ref={showcaseRef}
           onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovered(true)}
+          onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{ rotateX, rotateY, transformPerspective: 1000 }}
           className="relative w-full aspect-[4/5] md:aspect-square bg-[#050505] rounded-xl border border-white/10 overflow-hidden cursor-crosshair group will-change-transform"

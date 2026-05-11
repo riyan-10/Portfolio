@@ -4,6 +4,7 @@ import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
+import { CursorProvider } from "@/context/CursorContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}
     >
       <body className="bg-background text-foreground min-h-screen font-sans selection:bg-white/20 selection:text-white overflow-x-hidden">
-        <LoadingScreen />
-        <CustomCursor />
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <CursorProvider>
+          <LoadingScreen />
+          <CustomCursor />
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </CursorProvider>
       </body>
     </html>
   );

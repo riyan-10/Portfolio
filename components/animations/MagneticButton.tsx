@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useCursor } from "@/context/CursorContext";
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ export function MagneticButton({
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const { setCursorState } = useCursor();
   
   // Spring configurations for smooth, physical motion
   const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
@@ -42,8 +44,14 @@ export function MagneticButton({
     y.set(pullY);
   };
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    setCursorState("hover");
+  };
+
   const handleMouseLeave = () => {
     setIsHovered(false);
+    setCursorState("default");
     x.set(0);
     y.set(0);
   };
@@ -52,7 +60,7 @@ export function MagneticButton({
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
       style={{ x, y }}

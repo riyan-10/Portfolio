@@ -1,90 +1,130 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { useCursor } from "@/context/CursorContext";
 
 export function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [isClicking, setIsClicking] = useState(false);
+  const { cursorState } = useCursor();
   const [isVisible, setIsVisible] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
+
+  // High performance motion values avoiding React state renders
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+
+  // Physics-based interpolation for the inner dot (fast, snappy)
+  const springConfigDot = { damping: 25, stiffness: 400, mass: 0.1 };
+  const dotX = useSpring(cursorX, springConfigDot);
+  const dotY = useSpring(cursorY, springConfigDot);
+
+  // Physics-based interpolation for the outer ring (slower, trailing inertia)
+  const springConfigRing = { damping: 30, stiffness: 200, mass: 0.5 };
+  const ringX = useSpring(cursorX, springConfigRing);
+  const ringY = useSpring(cursorY, springConfigRing);
 
   useEffect(() => {
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+    const moveCursor = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.dataset.cursor === "hover"
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
     };
 
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
     const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener("mousemove", updatePosition);
-    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousemove", moveCursor);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
-      window.removeEventListener("mousemove", updatePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, [isVisible]);
+  }, [cursorX, cursorY, isVisible]);
 
-  // Disable on touch devices
+  // Completely disable on touch devices
   if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
     return null;
   }
 
+  // Variants for morphing states
+  const variants = {
+    default: {
+      width: 32,
+      height: 32,
+      x: "-50%",
+      y: "-50%",
+      backgroundColor: "rgba(255, 255, 255, 0)",
+      border: "1px solid rgba(255, 255, 255, 0.3)",
+      scale: isClicking ? 0.8 : 1,
+    },
+    hover: {
+      width: 48,
+      height: 48,
+      x: "-50%",
+      y: "-50%",
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      border: "1px solid rgba(255, 255, 255, 0.8)",
+      scale: isClicking ? 0.9 : 1.2,
+      mixBlendMode: "difference" as const,
+    },
+    view: {
+      width: 80,
+      height: 80,
+      x: "-50%",
+      y: "-50%",
+      backgroundColor: "rgba(255, 255, 255, 1)",
+      border: "none",
+      scale: isClicking ? 0.9 : 1,
+      mixBlendMode: "normal" as const,
+    },
+  };
+
+  const dotVariants = {
+    default: { opacity: 1, scale: 1 },
+    hover: { opacity: 0, scale: 0 },
+    view: { opacity: 0, scale: 0 },
+  };
+
   return (
     <>
+      {/* Outer Ring / Morphing Body */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
-        animate={{
-          x: position.x - 8,
-          y: position.y - 8,
-          scale: isClicking ? 0.8 : isHovering ? 2.5 : 1,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 150,
-          damping: 15,
-          mass: 0.1,
-        }}
-      />
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full flex items-center justify-center text-black font-bold tracking-widest text-[10px] uppercase overflow-hidden"
+        style={{ x: ringX, y: ringY, opacity: isVisible ? 1 : 0 }}
+        variants={variants}
+        animate={cursorState}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      >
+        <AnimatePresence>
+          {cursorState === "view" && (
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              View
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Inner Dot */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-white/30 rounded-full pointer-events-none z-[9998]"
-        animate={{
-          x: position.x - 16,
-          y: position.y - 16,
-          scale: isHovering ? 1.5 : 1,
-          opacity: isVisible ? (isHovering ? 0 : 1) : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 100,
-          damping: 20,
-          mass: 0.5,
-        }}
+        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[10000] mix-blend-difference"
+        style={{ x: dotX, y: dotY, translateX: "-50%", translateY: "-50%" }}
+        variants={dotVariants}
+        animate={cursorState}
+        transition={{ duration: 0.2 }}
       />
     </>
   );
