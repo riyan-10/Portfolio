@@ -7,6 +7,17 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { X } from "lucide-react";
 import { useCursor } from "@/context/CursorContext";
 
+const flagshipProject = {
+  id: "SYS-00",
+  title: "TechTrolley Ecosystem",
+  category: "Operational Infrastructure",
+  challenge: "AV rental companies suffer from chaotic logistics, losing thousands in untracked assets and disjointed scheduling systems.",
+  architecture: "Engineered a centralized, cloud-connected platform featuring real-time QR-based asset tracking, dynamic challan generation, and role-based human resource management.",
+  impact: "Automated business-critical workflows, drastically reducing asset loss and scaling operational efficiency across massive equipment inventories.",
+  tech: ["React Ecosystem", "Node.js Architecture", "Real-time QR Sync", "Role-Based Auth"],
+  image: "/projects/techtrolley.png"
+};
+
 const projects = [
   {
     id: "01",
@@ -45,25 +56,40 @@ export function Projects() {
     };
   }, [activeProject]);
 
+  const allProjects = [flagshipProject, ...projects];
+
   return (
     <section id="projects" className="py-32 md:py-64 relative bg-[#020202]">
       <div className="max-w-[90rem] mx-auto px-6">
         <FadeIn>
-          <div className="flex items-end justify-between mb-32 border-b border-white/10 pb-12">
-            <h2 className="text-4xl md:text-7xl font-bold tracking-tighter">Architecture <br/><span className="text-white/40">& Case Studies</span></h2>
-            <p className="text-white/40 hidden md:block text-sm tracking-widest uppercase font-mono">02 Selected Works</p>
+          <div className="flex items-end justify-between mb-24 border-b border-white/10 pb-12">
+            <h2 className="text-4xl md:text-7xl font-bold tracking-tighter">Architecture <br/><span className="text-white/40">& Engineered Systems</span></h2>
+            <p className="text-white/40 hidden md:block text-sm tracking-widest uppercase font-mono">Business-Critical Infrastructure</p>
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          {projects.map((project, index) => (
-            <ProjectCard 
-              key={project.id} 
-              project={project} 
-              index={index} 
-              onClick={() => setActiveProject(project.id)} 
-            />
-          ))}
+        <div className="flex flex-col gap-16">
+          
+          {/* FLAGSHIP SHOWCASE: TechTrolley */}
+          <ProjectCard 
+            project={flagshipProject} 
+            index={0} 
+            onClick={() => setActiveProject(flagshipProject.id)} 
+            isFlagship={true}
+          />
+
+          {/* Standard Architecture Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16 pt-16 border-t border-white/5">
+            {projects.map((project, index) => (
+              <ProjectCard 
+                key={project.id} 
+                project={project} 
+                index={index + 1} 
+                onClick={() => setActiveProject(project.id)} 
+                isFlagship={false}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -71,7 +97,7 @@ export function Projects() {
       <AnimatePresence>
         {activeProject && (
           <ActiveProjectOverlay 
-            project={projects.find(p => p.id === activeProject)} 
+            project={allProjects.find(p => p.id === activeProject)} 
             onClose={() => setActiveProject(null)} 
           />
         )}
@@ -80,7 +106,7 @@ export function Projects() {
   );
 }
 
-function ProjectCard({ project, index, onClick }: { project: any; index: number; onClick: () => void }) {
+function ProjectCard({ project, index, onClick, isFlagship = false }: { project: any; index: number; onClick: () => void; isFlagship?: boolean }) {
   const { setCursorState } = useCursor();
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -125,14 +151,14 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative flex flex-col gap-6 cursor-pointer group will-change-transform z-10"
+      className="relative flex flex-col gap-6 cursor-pointer group will-change-transform z-10 w-full"
       style={{ perspective: 1000 }}
     >
       <FadeIn delay={index * 0.2}>
         <motion.div 
           ref={cardRef}
           style={{ rotateX, rotateY }}
-          className="relative aspect-[4/3] bg-[#050505] rounded-xl border border-white/10 overflow-hidden"
+          className={`relative bg-[#050505] rounded-xl border border-white/10 overflow-hidden ${isFlagship ? 'aspect-[16/9] md:aspect-[21/9]' : 'aspect-[4/3]'}`}
         >
           {/* Spotlight Overlay */}
           <motion.div 
@@ -152,7 +178,7 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
             
             <div className="absolute inset-0 z-30 p-8 flex flex-col justify-between opacity-40 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none">
               <div className="flex justify-between text-[10px] font-mono text-white/50">
-                <span className="animate-pulse">SYS.OP: STABLE</span>
+                <span className="animate-pulse">SYS.OP: {isFlagship ? "FLAGSHIP" : "STABLE"}</span>
                 <span>MEM: {42 + (index * 13)}MB / SEC</span>
               </div>
             </div>
@@ -163,9 +189,9 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
           <motion.div layoutId={`project-meta-${project.id}`} className="flex items-center gap-4 text-white/40 font-mono text-xs uppercase tracking-widest">
             <span>{project.id}</span>
             <div className="h-[1px] w-8 bg-white/20" />
-            <span>{project.category}</span>
+            <span className={isFlagship ? "text-white/80 font-bold" : ""}>{project.category}</span>
           </motion.div>
-          <motion.h3 layoutId={`project-title-${project.id}`} className="text-3xl font-bold tracking-tighter group-hover:text-white/80 transition-colors">
+          <motion.h3 layoutId={`project-title-${project.id}`} className={`${isFlagship ? 'text-4xl md:text-6xl' : 'text-3xl'} font-bold tracking-tighter group-hover:text-white/80 transition-colors`}>
             {project.title}
           </motion.h3>
         </div>
