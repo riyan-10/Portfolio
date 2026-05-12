@@ -74,109 +74,104 @@ export function LoadingScreen() {
               </AnimatePresence>
             </div>
 
-            {/* Unified Cinematic Identity Morph Engine */}
+            {/* Persistent Cinematic Identity Continuum Engine */}
             <div className="h-48 flex items-center justify-center relative w-full">
-              <AnimatePresence>
-                {stage >= 2 && (
-                  <motion.div 
-                    layout
-                    transition={{ 
-                      layout: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
-                      opacity: { duration: 1 } 
-                    }}
-                    className="flex flex-col items-center relative"
-                  >
-                    {/* Main Row: The Identity Continuum */}
-                    <motion.div 
-                      layout
-                      className="flex items-baseline justify-center tracking-tight text-white"
-                    >
+              {stage >= 2 && (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, filter: "blur(15px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  className="flex flex-col items-center relative"
+                >
+                  <div className="flex items-baseline justify-center tracking-tight text-white">
+                    
+                    {/* Word 1: R -> Riyan (Physical Anchor) */}
+                    <div className="flex items-baseline">
+                      <motion.span 
+                        animate={{ 
+                          scale: stage === 2 ? 1.4 : 1,
+                          x: stage === 2 ? 10 : 0 // subtle centering weight
+                        }}
+                        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="font-bold leading-none text-5xl md:text-7xl origin-bottom-right"
+                      >
+                        R
+                      </motion.span>
                       
-                      {/* Word 1: R -> Riyan */}
-                      <div className="flex items-baseline overflow-hidden">
-                        <motion.span 
-                          layout
-                          className={`font-bold leading-none ${stage === 2 ? "text-7xl md:text-9xl" : "text-4xl md:text-7xl"}`}
-                        >
-                          R
-                        </motion.span>
-                        
-                        <AnimatePresence>
-                          {stage === 3 && (
-                            <motion.span
-                              initial={{ width: 0, opacity: 0, filter: "blur(10px)", x: -10 }}
-                              animate={{ width: "auto", opacity: 1, filter: "blur(0px)", x: 0 }}
-                              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                              className="font-bold text-4xl md:text-7xl whitespace-nowrap"
-                            >
-                              iyan
-                            </motion.span>
-                          )}
-                        </AnimatePresence>
-                      </div>
+                      <motion.span
+                        initial={{ width: 0, opacity: 0, filter: "blur(8px)", x: -20 }}
+                        animate={{ 
+                          width: stage === 3 ? "auto" : 0, 
+                          opacity: stage === 3 ? 1 : 0,
+                          filter: stage === 3 ? "blur(0px)" : "blur(8px)",
+                          x: stage === 3 ? 0 : -20
+                        }}
+                        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                        className="font-bold text-5xl md:text-7xl overflow-hidden whitespace-nowrap origin-left"
+                      >
+                        iyan
+                      </motion.span>
+                    </div>
 
-                      {/* Space/Slash Dynamic Transition */}
-                      <AnimatePresence mode="wait">
-                        {stage === 2 ? (
-                          <motion.span 
-                            key="slash"
-                            initial={{ opacity: 0, scaleY: 0 }}
-                            animate={{ opacity: 1, scaleY: 1 }}
-                            exit={{ opacity: 0, width: 0, margin: 0, filter: "blur(10px)" }}
-                            transition={{ duration: 0.8, delay: 0.3 }}
-                            className="text-6xl md:text-8xl font-light text-white/50 mx-2 md:mx-4 font-mono leading-none origin-bottom inline-block"
-                          >
-                            /
-                          </motion.span>
-                        ) : (
-                          <motion.span 
-                            key="space"
-                            layout
-                            className="w-3 md:w-5 inline-block"
-                          />
-                        )}
-                      </AnimatePresence>
+                    {/* Organic Environmental Splice: / -> Space */}
+                    <motion.span 
+                      initial={{ opacity: 0, scaleY: 0, width: 0 }}
+                      animate={{ 
+                        opacity: stage === 2 ? 1 : 0,
+                        scaleY: stage === 2 ? 1 : 0,
+                        width: stage === 2 ? "auto" : 16, // transforms into normal spacer margin
+                        margin: stage === 2 ? "0 16px" : "0"
+                      }}
+                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                      className="text-6xl md:text-8xl font-light text-white/40 font-mono leading-none origin-center flex items-center justify-center overflow-hidden"
+                    >
+                      /
+                    </motion.span>
 
-                      {/* Word 2: N -> Nizar */}
-                      <div className="flex items-baseline overflow-hidden">
-                        <motion.span 
-                          layout
-                          className={`font-bold leading-none ${stage === 2 ? "text-7xl md:text-9xl" : "text-4xl md:text-7xl"}`}
-                        >
-                          N
-                        </motion.span>
-                        
-                        <AnimatePresence>
-                          {stage === 3 && (
-                            <motion.span
-                              initial={{ width: 0, opacity: 0, filter: "blur(10px)", x: -10 }}
-                              animate={{ width: "auto", opacity: 1, filter: "blur(0px)", x: 0 }}
-                              transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                              className="font-bold text-4xl md:text-7xl whitespace-nowrap"
-                            >
-                              izar.
-                            </motion.span>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </motion.div>
+                    {/* Word 2: N -> Nizar (Physical Anchor) */}
+                    <div className="flex items-baseline">
+                      <motion.span 
+                        animate={{ 
+                          scale: stage === 2 ? 1.4 : 1,
+                          x: stage === 2 ? -10 : 0
+                        }}
+                        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="font-bold leading-none text-5xl md:text-7xl origin-bottom-left"
+                      >
+                        N
+                      </motion.span>
+                      
+                      <motion.span
+                        initial={{ width: 0, opacity: 0, filter: "blur(8px)", x: -20 }}
+                        animate={{ 
+                          width: stage === 3 ? "auto" : 0, 
+                          opacity: stage === 3 ? 1 : 0,
+                          filter: stage === 3 ? "blur(0px)" : "blur(8px)",
+                          x: stage === 3 ? 0 : -20
+                        }}
+                        transition={{ duration: 1.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+                        className="font-bold text-5xl md:text-7xl overflow-hidden whitespace-nowrap origin-left"
+                      >
+                        izar.
+                      </motion.span>
+                    </div>
+                  </div>
 
-                    {/* Subtitle Reveal anchored to parent dynamic container */}
-                    <AnimatePresence>
-                      {stage === 3 && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                          transition={{ duration: 1, delay: 1 }}
-                          className="mt-6 text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/40"
-                        >
-                          Creative Technologist
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                  {/* Anchored Tagline Reveal */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ 
+                      opacity: stage === 3 ? 1 : 0, 
+                      y: stage === 3 ? 0 : 10,
+                      filter: stage === 3 ? "blur(0px)" : "blur(4px)"
+                    }}
+                    transition={{ duration: 1.2, delay: 0.8 }}
+                    className="mt-8 text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/30 pointer-events-none"
+                  >
+                    Creative Technologist
                   </motion.div>
-                )}
-              </AnimatePresence>
+                </motion.div>
+              )}
             </div>
             
           </div>
