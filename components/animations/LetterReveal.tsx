@@ -18,7 +18,7 @@ export function LetterReveal({ text, delay = 0, className = "" }: LetterRevealPr
     visible: (i = 1) => ({
       opacity: 1,
       transition: { 
-        staggerChildren: 0.04, 
+        staggerChildren: 0.06, 
         delayChildren: delay * i,
       },
     }),
@@ -28,17 +28,22 @@ export function LetterReveal({ text, delay = 0, className = "" }: LetterRevealPr
     visible: {
       opacity: 1,
       y: 0,
+      z: 0,
+      rotateX: 0,
+      scale: 1,
       filter: "blur(0px)",
       transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 100,
+        duration: 1.4,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
     hidden: {
       opacity: 0,
-      y: 20,
-      filter: "blur(10px)",
+      y: 40,
+      z: -100,
+      rotateX: -60,
+      scale: 0.85,
+      filter: "blur(12px)",
     },
   };
 
@@ -49,6 +54,7 @@ export function LetterReveal({ text, delay = 0, className = "" }: LetterRevealPr
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
+      style={{ perspective: 1000 }}
     >
       {letters.map((char, index) => (
         <motion.span

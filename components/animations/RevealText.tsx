@@ -28,17 +28,17 @@ export function RevealText({ text, delay = 0, className = "" }: RevealTextProps)
       opacity: 1,
       y: 0,
       rotate: 0,
+      clipPath: "inset(0% 0% 0% 0%)",
       transition: {
-        type: "spring",
-        damping: 30,
-        stiffness: 100,
-        mass: 1.2,
+        duration: 1.4,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
     hidden: {
       opacity: 0,
-      y: 80,
-      rotate: 2, // Subtle editorial tilt during reveal
+      y: 40,
+      rotate: 4,
+      clipPath: "inset(100% 0% 0% 0%)",
     },
   };
 
