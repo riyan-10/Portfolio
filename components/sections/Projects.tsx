@@ -277,36 +277,35 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
       </motion.div>
 
       {/* 
-        LAYER 2: Typography Scale — solid white on black, simple and cinematic.
-        Scales massively then dissolves to reveal the living environment beneath.
+        LAYER 2: Typography Cutout — transparent letters revealing the environment.
+        mix-blend-mode: multiply makes white text = transparent window, black bg = opaque mask.
+        As letters scale, the cutout windows grow to reveal the full project world.
       */}
       <motion.div 
-        className="absolute inset-0 z-[105000] flex items-center justify-center bg-black/95 pointer-events-none"
+        className="absolute inset-0 z-[105000] flex items-center justify-center pointer-events-none"
+        style={{ backgroundColor: "#000", mixBlendMode: "multiply" }}
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
         transition={{ 
-          duration: 1,
-          delay: 1.4,
+          duration: 0.8,
+          delay: 1.6,
           ease: [0.16, 1, 0.3, 1]
         }}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ 
-            scale: 25,
+            scale: 30,
             opacity: 1,
           }}
           transition={{ 
-            scale: { duration: 2, ease: [0.33, 1, 0.68, 1] },
+            scale: { duration: 2.2, ease: [0.33, 1, 0.68, 1] },
             opacity: { duration: 0.4 }
           }}
           style={{ willChange: "transform" }}
           className="w-full flex items-center justify-center px-4 text-center transform-gpu"
         >
-          <h2 
-            className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none text-white"
-            style={{ textShadow: "0 0 80px rgba(255,255,255,0.15)" }}
-          >
+          <h2 className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none text-white">
             {project.title.split(' ')[0]}
           </h2>
         </motion.div>
