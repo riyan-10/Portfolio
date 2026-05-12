@@ -236,75 +236,24 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.6, ease: "easeInOut" } }}
-      className="fixed inset-0 z-[100000] flex items-center justify-center bg-black overflow-hidden"
+      exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
+      className="fixed inset-0 z-[100000] bg-black overflow-hidden"
     >
-      {/* Phase 1 & 2: Autonomous Environmental Mask Layer (No conditional state gates) */}
-      <motion.div 
-        className="absolute inset-0 z-[110000] flex items-center justify-center bg-black pointer-events-none"
-        initial={{ opacity: 1 }}
-        animate={{ 
-          opacity: 0 
-        }}
-        transition={{ 
-          duration: 0.8,
-          delay: 1.8, // Auto-vanish as zoom hits peak
-          ease: "easeInOut"
-        }}
-      >
-        <motion.div
-          initial={{ scale: 0.8, filter: "blur(20px)" }}
-          animate={{ 
-            scale: 40, // Higher peak for total environmental integration
-            filter: "blur(0px)",
-          }}
-          transition={{ 
-            scale: { duration: 2.2, ease: [0.33, 1, 0.68, 1] },
-            filter: { duration: 0.8 }
-          }}
-          className="w-full flex items-center justify-center px-4 text-center transform-gpu"
-        >
-          {/* Immediate typography portal mapped strictly to hardware composition */}
-          <div 
-            className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none"
-            style={{
-              backgroundImage: `url(${project.image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              filter: "contrast(1.2) brightness(1.1)",
-            }}
-          >
-            {project.title.split(' ')[0]}
-          </div>
-        </motion.div>
-      </motion.div>
-
+      {/* 
+        LAYER 1: Environmental Base — fades in IMMEDIATELY 
+        Creates atmospheric presence from frame 1.
+      */}
       <motion.div 
         layoutId={`project-container-${project.id}`}
-        transition={{ duration: 0.8 }}
-        className="relative w-full h-full bg-[#050505] overflow-hidden flex flex-col"
+        transition={{ duration: 0.6 }}
+        className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden"
       >
-        {/* Close Button - Seamless staggered entry */}
-        <motion.button 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          onClick={onClose}
-          className="absolute top-8 right-8 z-50 p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-black transition-colors"
-        >
-          <X className="w-5 h-5" />
-        </motion.button>
-
-        {/* Underlay Cinematic Background pre-mounting behind the mask */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 1.6, ease: "easeOut" }}
+          transition={{ duration: 1.8, ease: "easeOut" }}
           layoutId={`project-visuals-${project.id}`} 
-          className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-black"
+          className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         >
           <motion.div 
             style={{ y: bgY, scale: bgScale, opacity: bgOpacity }} 
@@ -319,22 +268,70 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
             />
           </motion.div>
           
-          {/* Atmospheric depth layers */}
+          {/* Atmospheric depth */}
           <div className="absolute inset-0 bg-[#050505]/60 z-10" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
-          
-          {/* Deep vignette for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent z-40" />
         </motion.div>
+      </motion.div>
 
-        {/* Seamless Content Reveal */}
+      {/* 
+        LAYER 2: Typography Scale — solid white on black, simple and cinematic.
+        Scales massively then dissolves to reveal the living environment beneath.
+      */}
+      <motion.div 
+        className="absolute inset-0 z-[105000] flex items-center justify-center bg-black/95 pointer-events-none"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
+        transition={{ 
+          duration: 1,
+          delay: 1.4,
+          ease: [0.16, 1, 0.3, 1]
+        }}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ 
+            scale: 25,
+            opacity: 1,
+          }}
+          transition={{ 
+            scale: { duration: 2, ease: [0.33, 1, 0.68, 1] },
+            opacity: { duration: 0.4 }
+          }}
+          style={{ willChange: "transform" }}
+          className="w-full flex items-center justify-center px-4 text-center transform-gpu"
+        >
+          <h2 
+            className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none text-white"
+            style={{ textShadow: "0 0 80px rgba(255,255,255,0.15)" }}
+          >
+            {project.title.split(' ')[0]}
+          </h2>
+        </motion.div>
+      </motion.div>
+
+      {/* 
+        LAYER 3: Content Interface — enters as environment settles.
+      */}
+      <div className="absolute inset-0 z-[110000] w-full h-full overflow-hidden flex flex-col pointer-events-none">
+        <motion.button 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+          onClick={onClose}
+          className="absolute top-8 right-8 z-50 p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-black transition-colors pointer-events-auto"
+        >
+          <X className="w-5 h-5" />
+        </motion.button>
+
         <motion.div 
           ref={scrollRef}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full h-full overflow-y-auto p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-16 lg:gap-32 scrollbar-hide"
+          transition={{ duration: 1, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 w-full h-full overflow-y-auto p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-16 lg:gap-32 scrollbar-hide pointer-events-auto"
         >
           
           <div className="flex-1 flex flex-col gap-6 lg:sticky top-0 h-fit">
@@ -377,7 +374,7 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
           </div>
 
         </motion.div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
