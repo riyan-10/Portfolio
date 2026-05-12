@@ -8,7 +8,10 @@ import { CinematicConvergence } from "@/components/animations/CinematicConvergen
 import { FadeIn } from "@/components/animations/FadeIn";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 
+import { useCursor } from "@/context/CursorContext";
+
 export function Hero() {
+  const { setCursorState } = useCursor();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -56,7 +59,7 @@ export function Hero() {
         style={{ background: backgroundGlow }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 4.8, duration: 3 }}
+        transition={{ delay: 6.8, duration: 3 }}
       />
       
       {/* Floating abstract layers (Depth Simulation) */}
@@ -65,7 +68,7 @@ export function Hero() {
         className="absolute inset-0 z-0 pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.4 }}
-        transition={{ delay: 5.0, duration: 3 }}
+        transition={{ delay: 7.0, duration: 3 }}
       >
         <div className="absolute top-[20%] left-[10%] w-64 h-64 bg-white/[0.02] rounded-full blur-[80px]" />
         <div className="absolute bottom-[20%] right-[10%] w-96 h-96 bg-white/[0.015] rounded-full blur-[100px]" />
@@ -77,7 +80,7 @@ export function Hero() {
         style={{ y: yText, opacity: opacityText, scale: scaleText }}
         className="relative z-10 flex flex-col items-center text-center px-4 mt-16"
       >
-        <FadeIn delay={6.2} direction="up">
+        <FadeIn delay={8.2} direction="up">
           <div className="flex items-center gap-4 mb-8">
             <div className="h-[1px] w-8 bg-white/20" />
             <p className="text-white/40 tracking-[0.4em] uppercase text-xs font-mono">
@@ -88,22 +91,26 @@ export function Hero() {
         </FadeIn>
 
         {/* Cinematic Typography Choreography */}
-        <h1 className="text-5xl md:text-8xl lg:text-[9vw] leading-[0.85] font-bold tracking-tighter mb-10 flex flex-col items-center">
-          <LetterReveal text="Engineering" delay={6.8} className="justify-center text-white" />
+        <motion.h1 
+          onMouseEnter={() => setCursorState("text")}
+          onMouseLeave={() => setCursorState("default")}
+          className="text-5xl md:text-8xl lg:text-[9vw] leading-[0.85] font-bold tracking-tighter mb-10 flex flex-col items-center cursor-none"
+        >
+          <LetterReveal text="Engineering" delay={8.8} className="justify-center text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
-            <RevealText text="Digital" delay={7.4} className="text-white/60 italic font-light" />
-            <CinematicConvergence text="Realities." delay={7.6} className="text-white" />
+            <RevealText text="Digital" delay={9.4} className="text-white/60 italic font-light" />
+            <CinematicConvergence text="Realities." delay={9.6} className="text-white" />
           </div>
-        </h1>
+        </motion.h1>
 
-        <FadeIn delay={8.2} direction="up" className="max-w-xl">
+        <FadeIn delay={10.2} direction="up" className="max-w-xl">
           <p className="text-white/50 text-lg md:text-xl font-light leading-relaxed">
             I craft immersive, high-performance web architecture that bridges the gap between raw backend power and cinematic visual design.
           </p>
         </FadeIn>
 
         {/* Magnetic Interactions */}
-        <FadeIn delay={8.8} direction="up" className="mt-12">
+        <FadeIn delay={10.8} direction="up" className="mt-12">
           <MagneticButton intensity={0.4}>
             <button 
               onClick={() => {
@@ -123,7 +130,7 @@ export function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 9.4, duration: 2 }}
+        transition={{ delay: 11.4, duration: 2 }}
       >
         <MagneticButton intensity={0.2} className="flex flex-col items-center gap-6 cursor-pointer">
           <div className="h-16 w-[1px] bg-gradient-to-b from-white/0 via-white/20 to-white/0 relative overflow-hidden">

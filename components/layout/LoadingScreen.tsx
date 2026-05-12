@@ -9,25 +9,28 @@ export function LoadingScreen() {
 
   useEffect(() => {
     // Cinematic timeline orchestration
-    // Stage 0: Initial black screen (0-1s)
-    // Stage 1: Atmosphere & Initialization text (1s-2.5s)
-    // Stage 2: Main typography assembly (2.5s-4.5s)
-    // Stage 3: Exit transition begins (4.5s)
+    // Stage 0: Initial black screen
+    // Stage 1: Initialization Telemetry
+    // Stage 2: Symbolic Emergence (/R/N/)
+    // Stage 3: Human Identity Reveal (Riyan Nizar)
+    // Stage 4: Exit transition begins
     
     const t1 = setTimeout(() => setStage(1), 800);
-    const t2 = setTimeout(() => setStage(2), 2400);
-    const t3 = setTimeout(() => setStage(3), 4800); // 4.8 seconds total intro duration
+    const t2 = setTimeout(() => setStage(2), 2200);
+    const t3 = setTimeout(() => setStage(3), 4200); // Pause with symbolic alone
+    const t4 = setTimeout(() => setStage(4), 6800); // Full identity settlement time
     
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
+      clearTimeout(t4);
     };
   }, []);
 
   return (
     <AnimatePresence>
-      {stage < 3 && (
+      {stage < 4 && (
         <motion.div
           className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#020202] text-white overflow-hidden"
           initial={{ opacity: 1 }}
@@ -71,27 +74,46 @@ export function LoadingScreen() {
               </AnimatePresence>
             </div>
 
-            {/* Stage 2: Main Cinematic Typography */}
-            <div className="h-32 flex items-center justify-center overflow-hidden">
-              <AnimatePresence>
+            {/* Typography Assembly Logic */}
+            <div className="h-48 flex items-center justify-center overflow-hidden relative w-full">
+              <AnimatePresence mode="wait">
                 {stage === 2 && (
                   <motion.div 
-                    className="flex flex-col items-center"
-                    exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    key="stage2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, y: -30, filter: "blur(15px)" }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex flex-col items-center absolute"
                   >
-                    <div className="flex items-end justify-center mb-6">
-                      <LetterReveal text="R" className="text-6xl md:text-8xl font-bold text-white leading-[0.8]" />
+                    <div className="flex items-end justify-center">
+                      <LetterReveal text="R" className="text-7xl md:text-9xl font-bold text-white leading-[0.8]" />
                       <motion.span 
                         initial={{ opacity: 0, scaleY: 0, filter: "blur(10px)" }}
                         animate={{ opacity: 1, scaleY: 1, filter: "blur(0px)" }}
                         transition={{ duration: 1.4, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-5xl md:text-7xl font-light text-white/50 mx-2 md:mx-4 font-mono leading-[0.9] origin-bottom"
+                        className="text-6xl md:text-8xl font-light text-white/50 mx-2 md:mx-4 font-mono leading-[0.9] origin-bottom"
                       >
                         /
                       </motion.span>
-                      <LetterReveal text="N" delay={0.4} className="text-6xl md:text-8xl font-bold text-white leading-[0.8]" />
+                      <LetterReveal text="N" delay={0.4} className="text-7xl md:text-9xl font-bold text-white leading-[0.8]" />
                     </div>
+                  </motion.div>
+                )}
+
+                {stage === 3 && (
+                  <motion.div 
+                    key="stage3"
+                    initial={{ opacity: 0, filter: "blur(20px)", y: 20 }}
+                    animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                    transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex flex-col items-center absolute"
+                  >
+                    <LetterReveal 
+                      text="Riyan Nizar." 
+                      className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-4" 
+                    />
                     <LetterReveal 
                       text="Creative Technologist" 
                       delay={0.8} 

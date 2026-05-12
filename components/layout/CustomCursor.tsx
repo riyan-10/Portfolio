@@ -64,6 +64,7 @@ export function CustomCursor() {
       y: "-50%",
       backgroundColor: "rgba(255, 255, 255, 0)",
       border: "1px solid rgba(255, 255, 255, 0.3)",
+      borderRadius: "50%",
       scale: isClicking ? 0.8 : 1,
     },
     hover: {
@@ -71,9 +72,10 @@ export function CustomCursor() {
       height: 48,
       x: "-50%",
       y: "-50%",
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
       border: "1px solid rgba(255, 255, 255, 0.8)",
-      scale: isClicking ? 0.9 : 1.2,
+      borderRadius: "50%",
+      scale: isClicking ? 0.9 : 1.1,
       mixBlendMode: "difference" as const,
     },
     view: {
@@ -83,15 +85,61 @@ export function CustomCursor() {
       y: "-50%",
       backgroundColor: "rgba(255, 255, 255, 1)",
       border: "none",
+      borderRadius: "50%",
       scale: isClicking ? 0.9 : 1,
       mixBlendMode: "normal" as const,
     },
+    text: {
+      width: 4,
+      height: 48,
+      x: "-50%",
+      y: "-50%",
+      backgroundColor: "rgba(255, 255, 255, 1)",
+      border: "none",
+      borderRadius: "2px",
+      scale: isClicking ? 0.7 : 1,
+      mixBlendMode: "difference" as const,
+    },
+    nexus: {
+      width: 64,
+      height: 64,
+      x: "-50%",
+      y: "-50%",
+      backgroundColor: "rgba(255, 255, 255, 0)",
+      border: "2px dashed rgba(255, 255, 255, 0.4)",
+      borderRadius: "50%",
+      scale: 1,
+      rotate: 180,
+      transition: {
+        rotate: { duration: 10, repeat: Infinity, ease: "linear" },
+      }
+    },
+    link: {
+      width: 12,
+      height: 12,
+      x: "-50%",
+      y: "-50%",
+      backgroundColor: "rgba(255, 255, 255, 1)",
+      border: "none",
+      borderRadius: "50%",
+      scale: isClicking ? 1.5 : 1,
+    }
   };
 
   const dotVariants = {
-    default: { opacity: 1, scale: 1 },
+    default: { opacity: 1, scale: 1, backgroundColor: "rgba(255,255,255,1)" },
     hover: { opacity: 0, scale: 0 },
     view: { opacity: 0, scale: 0 },
+    text: { opacity: 0, scale: 0 },
+    nexus: {
+      opacity: 1,
+      scale: [1, 1.4, 1],
+      backgroundColor: "rgba(255, 255, 255, 1)",
+      transition: {
+        scale: { repeat: Infinity, duration: 2, ease: "easeInOut" }
+      }
+    },
+    link: { opacity: 0, scale: 0 }
   };
 
   return (

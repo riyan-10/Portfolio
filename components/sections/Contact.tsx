@@ -26,6 +26,20 @@ const GithubIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const InstagramIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+  </svg>
+);
+
 export function Contact() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -57,13 +71,17 @@ export function Contact() {
           </div>
         </FadeIn>
 
-        <h2 className="text-5xl md:text-[8vw] leading-[0.85] font-bold tracking-tighter mb-32 flex flex-col items-center">
+        <motion.h2 
+          onMouseEnter={() => setCursorState("text")}
+          onMouseLeave={() => setCursorState("default")}
+          className="text-5xl md:text-[8vw] leading-[0.85] font-bold tracking-tighter mb-32 flex flex-col items-center cursor-none"
+        >
           <LetterReveal text="Establish" delay={0.6} className="text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
             <RevealText text="Direct" delay={1.2} className="text-white/40 italic font-light" />
             <RevealText text="Link." delay={1.5} className="text-white" />
           </div>
-        </h2>
+        </motion.h2>
 
         {/* AI Communication Nexus */}
         <FadeIn delay={2.2} direction="up" className="w-full flex justify-center mt-12 mb-32 relative">
@@ -83,10 +101,9 @@ export function Contact() {
 
 function NeuralNexus() {
   const nexusRef = useRef<HTMLDivElement>(null);
-  
+  const { setCursorState } = useCursor();
   const [activeNode, setActiveNode] = useState<string | null>(null);
 
-  // Mouse tracking for the entire nexus to drive subtle parallax
   const mouseX = useSpring(0, { stiffness: 100, damping: 30 });
   const mouseY = useSpring(0, { stiffness: 100, damping: 30 });
 
@@ -94,95 +111,138 @@ function NeuralNexus() {
     const handleMouseMove = (e: MouseEvent) => {
       if (!nexusRef.current) return;
       const rect = nexusRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) / 20;
-      const y = (e.clientY - rect.top - rect.height / 2) / 20;
+      const x = (e.clientX - rect.left - rect.width / 2) / 25;
+      const y = (e.clientY - rect.top - rect.height / 2) / 25;
       mouseX.set(x);
       mouseY.set(y);
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
+  // Define 5 satellite configuration data
+  const nodes = [
+    { id: "linkedin", label: "LinkedIn", icon: <LinkedinIcon className="w-5 h-5" />, angle: -144, href: "#" },
+    { id: "twitter", label: "X.com", icon: <TwitterIcon className="w-5 h-5" />, angle: -72, href: "#" },
+    { id: "whatsapp", label: "WhatsApp", icon: <WhatsAppIcon className="w-5 h-5" />, angle: 0, href: "#" },
+    { id: "github", label: "GitHub", icon: <GithubIcon className="w-5 h-5" />, angle: 72, href: "#" },
+    { id: "instagram", label: "Instagram", icon: <InstagramIcon className="w-5 h-5" />, angle: 144, href: "#" }
+  ];
+
+  const cx = 250, cy = 250, r = 180; // Center and Radius
+
   return (
-    <div ref={nexusRef} className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px] flex items-center justify-center">
-      
-      {/* Background Pulse/Grid */}
+    <div 
+      ref={nexusRef} 
+      className="relative w-[300px] h-[300px] md:w-[550px] md:h-[550px] flex items-center justify-center"
+      onMouseEnter={() => setCursorState("nexus")}
+      onMouseLeave={() => setCursorState("default")}
+    >
+      {/* Central Background Distortion & Grid Pulse */}
       <motion.div 
-        style={{ x: mouseX, y: mouseY }}
-        className="absolute inset-0 rounded-full border border-white/5 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0%,transparent_70%)] pointer-events-none" 
+        style={{ x: mouseX, y: mouseY, rotate: 0 }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 rounded-full border border-dashed border-white/5 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.01)_0%,transparent_80%)] pointer-events-none" 
       />
 
-      {/* SVG Neural Connections */}
+      {/* Dynamic High Density Neural Filaments SVG */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
         <defs>
-          <linearGradient id="pulse" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.6)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+          <linearGradient id="filamentActive" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.0)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.8)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.0)" />
           </linearGradient>
+          <filter id="filamentGlow">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
         </defs>
         
-        <motion.path 
-          d="M250,250 L100,150" 
-          stroke={activeNode === "twitter" ? "url(#pulse)" : "rgba(255,255,255,0.1)"} 
-          strokeWidth="1" 
-          fill="none" 
-          animate={activeNode === "twitter" ? { strokeDasharray: ["0, 1000", "1000, 0"] } : {}}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-        />
-        <motion.path 
-          d="M250,250 L400,150" 
-          stroke={activeNode === "linkedin" ? "url(#pulse)" : "rgba(255,255,255,0.1)"} 
-          strokeWidth="1" 
-          fill="none" 
-          animate={activeNode === "linkedin" ? { strokeDasharray: ["0, 1000", "1000, 0"] } : {}}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-        />
-        <motion.path 
-          d="M250,250 L250,400" 
-          stroke={activeNode === "github" ? "url(#pulse)" : "rgba(255,255,255,0.1)"} 
-          strokeWidth="1" 
-          fill="none" 
-          animate={activeNode === "github" ? { strokeDasharray: ["0, 1000", "1000, 0"] } : {}}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-        />
+        {nodes.map((node) => {
+          const rad = (node.angle - 90) * (Math.PI / 180);
+          const nx = cx + r * Math.cos(rad);
+          const ny = cy + r * Math.sin(rad);
+          const isActive = activeNode === node.id;
+          
+          // Generating triple filaments per connection node for circuit complexity
+          return (
+            <g key={`path-${node.id}`}>
+              {/* 1. Subtle background filament */}
+              <motion.path 
+                d={`M${cx},${cy} L${nx},${ny}`} 
+                stroke="rgba(255,255,255,0.05)" 
+                strokeWidth="1" 
+                fill="none" 
+              />
+              
+              {/* 2. Multi-threaded glowing propagation logic when hovered */}
+              {isActive && (
+                <>
+                  <motion.path 
+                    d={`M${cx},${cy} L${nx},${ny}`} 
+                    stroke="url(#filamentActive)" 
+                    strokeWidth="2" 
+                    fill="none"
+                    filter="url(#filamentGlow)"
+                    initial={{ strokeDasharray: "0, 500" }}
+                    animate={{ strokeDasharray: ["0, 500", "250, 250", "500, 0"] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                  />
+                  {/* Offset micro-filament for technical complexity */}
+                  <motion.path 
+                    d={`M${cx+2},${cy+2} L${nx+2},${ny+2}`} 
+                    stroke="rgba(255,255,255,0.3)" 
+                    strokeWidth="0.5" 
+                    fill="none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                </>
+              )}
+            </g>
+          );
+        })}
       </svg>
 
-      {/* Orbital Nodes */}
-      <div className="absolute top-[30%] left-[20%] -translate-x-1/2 -translate-y-1/2">
-        <NeuralNode 
-          icon={<TwitterIcon className="w-5 h-5" />} 
-          label="X.com" 
-          href="#" 
-          onHover={() => setActiveNode("twitter")} 
-          onLeave={() => setActiveNode(null)} 
-        />
-      </div>
+      {/* Orbital Nodes Generation mapped dynamically from configuration */}
+      {nodes.map((node) => {
+        const rad = (node.angle - 90) * (Math.PI / 180);
+        // Convert relative position percentage for outer bounding wrapper positioning
+        const leftPercent = 50 + (r / 5) * Math.cos(rad);
+        const topPercent = 50 + (r / 5) * Math.sin(rad);
 
-      <div className="absolute top-[30%] right-[20%] translate-x-1/2 -translate-y-1/2">
-        <NeuralNode 
-          icon={<LinkedinIcon className="w-5 h-5" />} 
-          label="LinkedIn" 
-          href="#" 
-          onHover={() => setActiveNode("linkedin")} 
-          onLeave={() => setActiveNode(null)} 
-        />
-      </div>
+        return (
+          <div 
+            key={node.id}
+            style={{ 
+              position: "absolute",
+              left: `${leftPercent}%`,
+              top: `${topPercent}%`,
+              transform: "translate(-50%, -50%)"
+            }}
+          >
+            <NeuralNode 
+              icon={node.icon} 
+              label={node.label} 
+              href={node.href} 
+              onHover={() => {
+                setActiveNode(node.id);
+                setCursorState("link");
+              }} 
+              onLeave={() => {
+                setActiveNode(null);
+                setCursorState("nexus");
+              }} 
+            />
+          </div>
+        );
+      })}
 
-      <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 translate-y-1/2">
-        <NeuralNode 
-          icon={<GithubIcon className="w-5 h-5" />} 
-          label="GitHub" 
-          href="#" 
-          onHover={() => setActiveNode("github")} 
-          onLeave={() => setActiveNode(null)} 
-        />
-      </div>
-
-      {/* Core Node */}
+      {/* Core Connection Point */}
       <CoreNode isNetworkActive={activeNode !== null} />
-
     </div>
   );
 }
@@ -194,25 +254,24 @@ function CoreNode({ isNetworkActive }: { isNetworkActive: boolean }) {
     <motion.a
       href="mailto:hello@example.com"
       onMouseEnter={() => setCursorState("hover")}
-      onMouseLeave={() => setCursorState("default")}
-      className="relative z-20 w-32 h-32 md:w-48 md:h-48 rounded-full bg-black border border-white/20 flex flex-col items-center justify-center gap-2 group shadow-[0_0_60px_rgba(255,255,255,0.05)] hover:shadow-[0_0_80px_rgba(255,255,255,0.1)] transition-all duration-700"
+      onMouseLeave={() => setCursorState("nexus")}
+      className="relative z-20 w-32 h-32 md:w-44 md:h-44 rounded-full bg-black border border-white/20 flex flex-col items-center justify-center gap-2 group shadow-[0_0_80px_rgba(255,255,255,0.03)] hover:shadow-[0_0_100px_rgba(255,255,255,0.08)] transition-all duration-700"
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <div className="absolute inset-0 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
       
-      {/* Glitch Scanlines inside Core */}
-      <div className="absolute inset-0 rounded-full z-0 pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-100 transition-opacity duration-700 overflow-hidden"
-           style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 3px)" }} />
+      <div className="absolute inset-0 rounded-full z-0 pointer-events-none mix-blend-overlay opacity-40 group-hover:opacity-80 transition-opacity duration-700 overflow-hidden"
+           style={{ background: "repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 3px)" }} />
            
       <motion.div 
-        animate={{ scale: isNetworkActive ? 1.1 : 1, opacity: isNetworkActive ? 0.5 : 1 }}
+        animate={{ scale: isNetworkActive ? 1.1 : 1, opacity: isNetworkActive ? 0.6 : 1 }}
         transition={{ duration: 0.5 }}
         className="relative z-10 flex flex-col items-center"
       >
-        <Mail className="w-6 h-6 md:w-8 md:h-8 text-white/80 group-hover:text-white transition-colors mb-2" />
-        <span className="text-white/60 group-hover:text-white text-xs font-mono uppercase tracking-widest transition-colors">
-          Initialize
+        <Mail className="w-6 h-6 md:w-7 md:h-7 text-white/80 group-hover:text-white transition-colors mb-2" />
+        <span className="text-white/50 group-hover:text-white text-[9px] font-mono uppercase tracking-[0.25em] transition-colors">
+          Direct Transmission
         </span>
       </motion.div>
     </motion.a>
@@ -220,13 +279,11 @@ function CoreNode({ isNetworkActive }: { isNetworkActive: boolean }) {
 }
 
 function NeuralNode({ icon, label, href, onHover, onLeave }: { icon: React.ReactNode; label: string; href: string; onHover: () => void; onLeave: () => void }) {
-  const { setCursorState } = useCursor();
-
   return (
     <motion.a
       href={href}
-      onMouseEnter={() => { setCursorState("hover"); onHover(); }}
-      onMouseLeave={() => { setCursorState("default"); onLeave(); }}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
       className="relative z-20 w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#050505] border border-white/10 flex items-center justify-center group hover:bg-white hover:border-transparent transition-colors duration-500"
       whileHover={{ scale: 1.1 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}

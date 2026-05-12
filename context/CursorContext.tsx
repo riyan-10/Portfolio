@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 
-type CursorState = "default" | "hover" | "view" | "magnetic";
+type CursorState = "default" | "hover" | "view" | "magnetic" | "text" | "nexus" | "link";
 
 interface CursorContextType {
   cursorState: CursorState;
