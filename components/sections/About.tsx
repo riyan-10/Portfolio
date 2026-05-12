@@ -14,10 +14,22 @@ export function About() {
 
   const y1 = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   const y2 = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
+  
+  // Cinematic Environmental Response
+  const envOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.1, 0.4, 0.4, 0.1]);
 
   return (
     <section id="about" className="py-48 md:py-64 relative bg-[#050505] overflow-hidden" ref={containerRef}>
-      <div className="max-w-[90rem] mx-auto px-6">
+      {/* Scroll-Responsive Environment */}
+      <motion.div 
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{ opacity: envOpacity }}
+      >
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] rounded-full" />
+        <div className="absolute right-0 top-1/4 w-96 h-96 bg-white/[0.01] rounded-full blur-[100px]" />
+      </motion.div>
+
+      <div className="relative z-10 max-w-[90rem] mx-auto px-6">
         
         {/* Editorial Section Header */}
         <FadeIn>

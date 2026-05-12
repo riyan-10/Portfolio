@@ -33,9 +33,8 @@ export function LoadingScreen() {
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
-            scale: 1.1,
             filter: "blur(20px)",
-            transition: { duration: 1.8, ease: [0.16, 1, 0.3, 1] } 
+            transition: { duration: 2.4, ease: "easeInOut" } 
           }}
         >
           {/* Subtle noise texture overlay */}
