@@ -88,21 +88,21 @@ export function Hero() {
 
         {/* Cinematic Typography Choreography */}
         <h1 className="text-5xl md:text-8xl lg:text-[9vw] leading-[0.85] font-bold tracking-tighter mb-10 flex flex-col items-center">
-          <LetterReveal text="Engineering" delay={6.5} className="justify-center text-white" />
+          <LetterReveal text="Engineering" delay={6.8} className="justify-center text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
-            <RevealText text="Digital" delay={6.9} className="text-white/60 italic font-light" />
-            <RevealText text="Realities." delay={7.1} className="text-white" />
+            <RevealText text="Digital" delay={7.4} className="text-white/60 italic font-light" />
+            <RevealText text="Realities." delay={7.6} className="text-white" />
           </div>
         </h1>
 
-        <FadeIn delay={7.5} direction="up" className="max-w-xl">
+        <FadeIn delay={8.2} direction="up" className="max-w-xl">
           <p className="text-white/50 text-lg md:text-xl font-light leading-relaxed">
             I craft immersive, high-performance web architecture that bridges the gap between raw backend power and cinematic visual design.
           </p>
         </FadeIn>
 
         {/* Magnetic Interactions */}
-        <FadeIn delay={7.9} direction="up" className="mt-12">
+        <FadeIn delay={8.8} direction="up" className="mt-12">
           <MagneticButton intensity={0.4}>
             <button 
               onClick={() => {
@@ -122,7 +122,7 @@ export function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 8.3, duration: 2 }}
+        transition={{ delay: 9.4, duration: 2 }}
       >
         <MagneticButton intensity={0.2} className="flex flex-col items-center gap-6 cursor-pointer">
           <div className="h-16 w-[1px] bg-gradient-to-b from-white/0 via-white/20 to-white/0 relative overflow-hidden">

@@ -22,8 +22,8 @@ export function MagneticButton({
   const [isHovered, setIsHovered] = useState(false);
   const { setCursorState } = useCursor();
   
-  // Spring configurations for smooth, physical motion
-  const springConfig = { damping: 15, stiffness: 150, mass: 0.1 };
+  // Spring configurations for smooth, physical, luxurious motion
+  const springConfig = { damping: 20, stiffness: 100, mass: 0.5 };
   const x = useSpring(0, springConfig);
   const y = useSpring(0, springConfig);
 

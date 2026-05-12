@@ -36,7 +36,7 @@ export function FadeIn({
       }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{
-        duration: 1.4,
+        duration: 1.6,
         delay,
         ease: [0.16, 1, 0.3, 1], // Cinematic custom cubic-bezier (Expo Out variant)
       }}

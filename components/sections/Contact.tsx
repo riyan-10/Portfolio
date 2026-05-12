@@ -33,7 +33,7 @@ export function Contact() {
 
       <motion.div style={{ y: yParallax }} className="max-w-[90rem] mx-auto w-full relative z-10 flex-1 flex flex-col justify-center items-center text-center">
         
-        <FadeIn>
+        <FadeIn delay={0.2}>
           <div className="flex items-center gap-4 mb-16">
             <div className="h-[1px] w-8 bg-white/20" />
             <p className="text-white/30 tracking-[0.4em] uppercase text-[10px] font-mono">
@@ -45,15 +45,15 @@ export function Contact() {
 
         {/* Cinematic Typography Sequence */}
         <h2 className="text-5xl md:text-[8vw] leading-[0.85] font-bold tracking-tighter mb-24 flex flex-col items-center">
-          <LetterReveal text="Initiate" delay={0.2} className="text-white" />
+          <LetterReveal text="Initiate" delay={0.6} className="text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
-            <RevealText text="Secure" delay={0.6} className="text-white/40 italic font-light" />
-            <RevealText text="Connection." delay={0.8} className="text-white" />
+            <RevealText text="Secure" delay={1.2} className="text-white/40 italic font-light" />
+            <RevealText text="Connection." delay={1.5} className="text-white" />
           </div>
         </h2>
 
         {/* The Connection Terminal */}
-        <FadeIn delay={1.2} direction="up" className="w-full max-w-2xl">
+        <FadeIn delay={2.2} direction="up" className="w-full max-w-2xl">
           <PrimaryNode />
         </FadeIn>
 
@@ -62,11 +62,11 @@ export function Contact() {
       {/* Auxiliary Nodes (Footer) */}
       <div className="max-w-[90rem] mx-auto w-full relative z-10 mt-32 border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-8 text-white/40 text-xs font-mono uppercase tracking-widest">
         <div className="flex gap-4">
-          <AuxiliaryNode href="#" label="Twitter // X" delay={1.4} />
-          <AuxiliaryNode href="#" label="LinkedIn" delay={1.5} />
-          <AuxiliaryNode href="#" label="GitHub" delay={1.6} />
+          <AuxiliaryNode href="#" label="Twitter // X" delay={2.6} />
+          <AuxiliaryNode href="#" label="LinkedIn" delay={2.7} />
+          <AuxiliaryNode href="#" label="GitHub" delay={2.8} />
         </div>
-        <FadeIn delay={1.8}>
+        <FadeIn delay={3.2}>
           <p className="opacity-50">SYS.VER 1.0.0 © {new Date().getFullYear()}</p>
         </FadeIn>
       </div>

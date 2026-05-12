@@ -9,7 +9,7 @@ interface SmoothScrollProviderProps {
 
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   return (
-    <ReactLenis root options={{ lerp: 0.08, duration: 1.5, smoothWheel: true }}>
+    <ReactLenis root options={{ lerp: 0.05, duration: 1.8, smoothWheel: true }}>
       {children}
     </ReactLenis>
   );
