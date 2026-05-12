@@ -237,79 +237,76 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
-      className="fixed inset-0 z-[100000] bg-black overflow-hidden"
+      className="fixed inset-0 z-[100000] overflow-hidden"
     >
-      {/* 
-        LAYER 1: Environmental Base — fades in IMMEDIATELY 
-        Creates atmospheric presence from frame 1.
-      */}
-      <motion.div 
-        layoutId={`project-container-${project.id}`}
-        transition={{ duration: 0.6 }}
-        className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden"
-      >
+      {/* Isolation group: blend mode composes against environment, not parent */}
+      <div className="absolute inset-0" style={{ isolation: "isolate" }}>
+        
+        {/* LAYER 1: Environment — fades in fast so blend has content to reveal */}
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.8, ease: "easeOut" }}
-          layoutId={`project-visuals-${project.id}`} 
-          className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
+          layoutId={`project-container-${project.id}`}
+          transition={{ duration: 0.6 }}
+          className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden"
         >
           <motion.div 
-            style={{ y: bgY, scale: bgScale, opacity: bgOpacity }} 
-            className="absolute inset-0 w-full h-full will-change-transform"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            layoutId={`project-visuals-${project.id}`} 
+            className="absolute inset-0 pointer-events-none overflow-hidden"
           >
-            <Image 
-              src={project.image} 
-              alt={project.title} 
-              fill 
-              priority
-              className="object-cover object-top grayscale contrast-125 mix-blend-luminosity"
-            />
+            <motion.div 
+              style={{ y: bgY, scale: bgScale, opacity: bgOpacity }} 
+              className="absolute inset-0 w-full h-full will-change-transform"
+            >
+              <Image 
+                src={project.image} 
+                alt={project.title} 
+                fill 
+                priority
+                className="object-cover object-top grayscale contrast-125 mix-blend-luminosity"
+              />
+            </motion.div>
+            
+            {/* Atmospheric depth */}
+            <div className="absolute inset-0 bg-[#050505]/60 z-10" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent z-40" />
           </motion.div>
-          
-          {/* Atmospheric depth */}
-          <div className="absolute inset-0 bg-[#050505]/60 z-10" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent z-40" />
         </motion.div>
-      </motion.div>
 
-      {/* 
-        LAYER 2: Typography Cutout — transparent letters revealing the environment.
-        mix-blend-mode: multiply makes white text = transparent window, black bg = opaque mask.
-        As letters scale, the cutout windows grow to reveal the full project world.
-      */}
-      <motion.div 
-        className="absolute inset-0 z-[105000] flex items-center justify-center pointer-events-none"
-        style={{ backgroundColor: "#000", mixBlendMode: "multiply" }}
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{ 
-          duration: 0.8,
-          delay: 1.6,
-          ease: [0.16, 1, 0.3, 1]
-        }}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ 
-            scale: 30,
-            opacity: 1,
-          }}
+        {/* LAYER 2: Typography Cutout — white text = window, black bg = mask */}
+        <motion.div 
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          style={{ backgroundColor: "#000", mixBlendMode: "multiply" }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
           transition={{ 
-            scale: { duration: 2.2, ease: [0.33, 1, 0.68, 1] },
-            opacity: { duration: 0.4 }
+            duration: 0.8,
+            delay: 1.6,
+            ease: [0.16, 1, 0.3, 1]
           }}
-          style={{ willChange: "transform" }}
-          className="w-full flex items-center justify-center px-4 text-center transform-gpu"
         >
-          <h2 className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none text-white">
-            {project.title.split(' ')[0]}
-          </h2>
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ 
+              scale: 30,
+              opacity: 1,
+            }}
+            transition={{ 
+              scale: { duration: 2.2, ease: [0.33, 1, 0.68, 1] },
+              opacity: { duration: 0.4 }
+            }}
+            style={{ willChange: "transform" }}
+            className="w-full flex items-center justify-center px-4 text-center transform-gpu"
+          >
+            <h2 className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none text-white">
+              {project.title.split(' ')[0]}
+            </h2>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* 
         LAYER 3: Content Interface — enters as environment settles.
