@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 import { RevealText } from "@/components/animations/RevealText";
 import { LetterReveal } from "@/components/animations/LetterReveal";
+import { CinematicConvergence } from "@/components/animations/CinematicConvergence";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 
@@ -91,7 +92,7 @@ export function Hero() {
           <LetterReveal text="Engineering" delay={6.8} className="justify-center text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
             <RevealText text="Digital" delay={7.4} className="text-white/60 italic font-light" />
-            <RevealText text="Realities." delay={7.6} className="text-white" />
+            <CinematicConvergence text="Realities." delay={7.6} className="text-white" />
           </div>
         </h1>
 

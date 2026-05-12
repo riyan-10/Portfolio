@@ -236,12 +236,13 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100000] flex items-center justify-center p-4 md:p-12 bg-black/80 backdrop-blur-sm"
+      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+      className="fixed inset-0 z-[100000] flex items-center justify-center bg-black"
     >
       <motion.div 
         layoutId={`project-container-${project.id}`}
-        className="relative w-full h-full max-w-[90rem] bg-[#050505] rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-2xl"
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full h-full bg-[#050505] overflow-hidden flex flex-col"
       >
         {/* Close Button */}
         <button 
