@@ -146,6 +146,10 @@ function PrimaryNode() {
       {/* Internal Architecture Grids */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 group-hover:opacity-50 transition-opacity duration-700" />
       
+      {/* Terminal Glitch Scanlines */}
+      <div className="absolute inset-0 z-0 pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-100 transition-opacity duration-700"
+           style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.03) 3px, rgba(255,255,255,0.03) 4px)" }} />
+      
       {/* Content */}
       <div className="relative z-20 flex flex-col items-start gap-2">
         <div className="flex items-center gap-3 text-white/40 text-[10px] font-mono tracking-widest uppercase">

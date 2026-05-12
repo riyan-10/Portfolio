@@ -1,0 +1,326 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=Rajdhani:wght@500;700&family=DM+Sans:wght@300;400&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.wrap { padding: 1.5rem 0 2rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.card {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background-secondary);
+}
+.card.wide { grid-column: span 2; }
+
+.canvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 190px;
+  padding: 2rem 1.5rem;
+}
+
+.info {
+  border-top: 0.5px solid var(--color-border-tertiary);
+  padding: 12px 14px;
+}
+.info-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+.info-desc  { font-size: 11px; color: var(--color-text-tertiary); line-height: 1.5; }
+
+/* ── 1. TERMINAL GLITCH ── */
+.t1 {
+  background: #050810;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; position: relative; overflow: hidden;
+}
+.t1::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,255,157,0.025) 3px, rgba(0,255,157,0.025) 4px);
+  pointer-events: none;
+}
+.t1-sys {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px; letter-spacing: 0.25em;
+  color: rgba(0,255,157,0.5);
+  text-transform: uppercase;
+}
+.t1-rn {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 68px;
+  letter-spacing: -6px; line-height: 1;
+  color: #fff;
+  position: relative;
+}
+.t1-rn::after {
+  content: 'RN';
+  position: absolute; left: 2px; top: 1px;
+  color: #00ff9d;
+  opacity: 0.4;
+  clip-path: inset(30% 0 40% 0);
+}
+.t1-bar {
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, #00ff9d, transparent);
+}
+.t1-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 7px; letter-spacing: 0.2em;
+  color: #00ff9d;
+  text-transform: uppercase;
+}
+
+/* ── 2. CIRCUIT MARK ── */
+.t2-outer {
+  width: 110px; height: 110px;
+  background: #08080f;
+  border: 1.5px solid #00ff9d;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.t2-outer::before, .t2-outer::after {
+  content: '';
+  position: absolute;
+  background: #00ff9d;
+}
+.t2-outer::before {
+  width: 12px; height: 1.5px;
+  top: -1.5px; left: 16px;
+}
+.t2-outer::after {
+  width: 1.5px; height: 12px;
+  top: 16px; right: -1.5px;
+}
+.t2-corner {
+  position: absolute;
+  bottom: -1.5px; right: 16px;
+  width: 12px; height: 1.5px;
+  background: #00ff9d;
+}
+.t2-rn {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700; font-size: 52px;
+  letter-spacing: -3px; line-height: 1;
+  color: #00ff9d;
+}
+.t2-dot {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 5px; height: 5px;
+  background: #00ff9d;
+  border-radius: 50%;
+}
+
+/* ── 3. SPLIT PLATE (wide) ── */
+.t3-wrap {
+  display: flex; align-items: stretch;
+  gap: 0; height: 90px;
+}
+.t3-left {
+  background: #00ff9d;
+  width: 90px;
+  display: flex; align-items: center; justify-content: center;
+  clip-path: polygon(0 0, 85% 0, 100% 100%, 0 100%);
+  flex-shrink: 0;
+}
+.t3-r {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 54px;
+  color: #050810; line-height: 1;
+  margin-right: 8px;
+}
+.t3-right {
+  background: #050810;
+  border: 1px solid #00ff9d22;
+  display: flex; flex-direction: column;
+  justify-content: center; padding: 0 16px 0 20px;
+  flex: 1;
+  margin-left: -2px;
+}
+.t3-n {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 54px;
+  color: #00ff9d; line-height: 1;
+}
+.t3-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px; letter-spacing: 0.18em;
+  color: rgba(0,255,157,0.5);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.t3-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 7px; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+}
+
+/* ── 4. HEXAGONAL BADGE ── */
+.t4 { background: #050810; }
+.t4-wrap { position: relative; width: 108px; height: 108px; }
+.t4-hex {
+  width: 108px; height: 108px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: #00ff9d;
+  display: flex; align-items: center; justify-content: center;
+}
+.t4-inner {
+  width: 88px; height: 88px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: #050810;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1px;
+}
+.t4-rn {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 38px;
+  letter-spacing: -3px; line-height: 1;
+  color: #fff;
+}
+.t4-line {
+  width: 30px; height: 1.5px;
+  background: #00ff9d;
+}
+.t4-ver {
+  font-family: 'Space Mono', monospace;
+  font-size: 6px; letter-spacing: 0.15em;
+  color: #00ff9d;
+}
+
+/* ── 5. MINIMAL WORDMARK ── */
+.t5-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.t5-mark { display: flex; align-items: flex-end; gap: 1px; }
+.t5-r {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 62px;
+  color: var(--color-text-primary); line-height: 1;
+  position: relative;
+}
+.t5-slash {
+  font-family: 'Space Mono', monospace;
+  font-size: 50px; line-height: 1.05;
+  color: #00ff9d; font-weight: 400;
+  margin: 0 -2px;
+}
+.t5-n {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 62px;
+  color: var(--color-text-primary); line-height: 1;
+}
+.t5-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.t5-dash { width: 20px; height: 1px; background: var(--color-border-secondary); }
+.t5-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+</style>
+
+<div class="wrap">
+  <div class="grid">
+
+    <!-- 1: Terminal Glitch -->
+    <div class="card">
+      <div class="canvas t1">
+        <div class="t1-sys">SYS.IDENT // INIT</div>
+        <div class="t1-rn">RN</div>
+        <div class="t1-bar"></div>
+        <div class="t1-status">● ONLINE</div>
+      </div>
+      <div class="info">
+        <div class="info-title">Terminal Glitch</div>
+        <div class="info-desc">Scanlines + glitch offset. Speaks the same language as your "System Online" hero.</div>
+      </div>
+    </div>
+
+    <!-- 2: Circuit Mark -->
+    <div class="card">
+      <div class="canvas" style="background:#0a0c14">
+        <div class="t2-outer">
+          <span class="t2-rn">RN</span>
+          <div class="t2-dot"></div>
+          <div class="t2-corner"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Circuit Mark</div>
+        <div class="info-desc">PCB-style corner traces on a dark square. Very favicon-friendly.</div>
+      </div>
+    </div>
+
+    <!-- 3: Split Plate Wordmark (wide) -->
+    <div class="card wide">
+      <div class="canvas" style="background:#080b12">
+        <div class="t3-wrap">
+          <div class="t3-left"><span class="t3-r">R</span></div>
+          <div class="t3-right">
+            <span class="t3-n">N</span>
+            <span class="t3-name">RIYAN NIZAR</span>
+            <span class="t3-title">Creative Developer</span>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Split Plate — Full Wordmark</div>
+        <div class="info-desc">R on green, N on dark. Diagonal cut. Best for navbar, email signature, and LinkedIn banner.</div>
+      </div>
+    </div>
+
+    <!-- 4: Hex Badge -->
+    <div class="card">
+      <div class="canvas t4">
+        <div class="t4-wrap">
+          <div class="t4-hex">
+            <div class="t4-inner">
+              <div class="t4-rn">RN</div>
+              <div class="t4-line"></div>
+              <div class="t4-ver">v1.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Hex Badge</div>
+        <div class="info-desc">Engineer aesthetic — hexagon = hardware/PCB culture. Killer favicon.</div>
+      </div>
+    </div>
+
+    <!-- 5: Minimal Slash -->
+    <div class="card">
+      <div class="canvas">
+        <div class="t5-wrap">
+          <div class="t5-mark">
+            <span class="t5-r">R</span>
+            <span class="t5-slash">/</span>
+            <span class="t5-n">N</span>
+          </div>
+          <div class="t5-row">
+            <div class="t5-dash"></div>
+            <span class="t5-sub">Riyan Nizar</span>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Minimal Slash</div>
+        <div class="info-desc">R/N — like a file path. Speaks coder. Works on any background.</div>
+      </div>
+    </div>
+
+  </div>
+</div>

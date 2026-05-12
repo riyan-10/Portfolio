@@ -80,10 +80,18 @@ export function LoadingScreen() {
                     exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <LetterReveal 
-                      text="Riyan Nizar." 
-                      className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-4" 
-                    />
+                    <div className="flex items-end justify-center mb-6">
+                      <LetterReveal text="R" className="text-6xl md:text-8xl font-bold text-white leading-[0.8]" />
+                      <motion.span 
+                        initial={{ opacity: 0, scaleY: 0, filter: "blur(10px)" }}
+                        animate={{ opacity: 1, scaleY: 1, filter: "blur(0px)" }}
+                        transition={{ duration: 1.4, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-5xl md:text-7xl font-light text-white/50 mx-2 md:mx-4 font-mono leading-[0.9] origin-bottom"
+                      >
+                        /
+                      </motion.span>
+                      <LetterReveal text="N" delay={0.4} className="text-6xl md:text-8xl font-bold text-white leading-[0.8]" />
+                    </div>
                     <LetterReveal 
                       text="Creative Technologist" 
                       delay={0.8} 

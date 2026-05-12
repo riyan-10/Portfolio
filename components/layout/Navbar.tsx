@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { CircuitMark } from "@/components/ui/CircuitMark";
 
 const navItems = [
   { name: "Home", href: "#home" },
@@ -46,6 +47,12 @@ export function Navbar() {
           isScrolled ? "bg-black/40 backdrop-blur-md border border-white/10" : "bg-transparent"
         )}
       >
+        <Link href="#home" data-cursor="hover" onClick={(e) => {
+          e.preventDefault();
+          document.querySelector("#home")?.scrollIntoView({ behavior: "smooth" });
+        }}>
+          <CircuitMark className="text-white/50 hover:text-white transition-colors mr-2" size={28} />
+        </Link>
         {navItems.map((item) => (
           <Link
             key={item.name}
