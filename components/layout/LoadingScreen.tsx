@@ -74,51 +74,106 @@ export function LoadingScreen() {
               </AnimatePresence>
             </div>
 
-            {/* Typography Assembly Logic */}
-            <div className="h-48 flex items-center justify-center overflow-hidden relative w-full">
-              <AnimatePresence mode="wait">
-                {stage === 2 && (
+            {/* Unified Cinematic Identity Morph Engine */}
+            <div className="h-48 flex items-center justify-center relative w-full">
+              <AnimatePresence>
+                {stage >= 2 && (
                   <motion.div 
-                    key="stage2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, y: -30, filter: "blur(15px)" }}
-                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex flex-col items-center absolute"
+                    layout
+                    transition={{ 
+                      layout: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
+                      opacity: { duration: 1 } 
+                    }}
+                    className="flex flex-col items-center relative"
                   >
-                    <div className="flex items-end justify-center">
-                      <LetterReveal text="R" className="text-7xl md:text-9xl font-bold text-white leading-[0.8]" />
-                      <motion.span 
-                        initial={{ opacity: 0, scaleY: 0, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, scaleY: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 1.4, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-6xl md:text-8xl font-light text-white/50 mx-2 md:mx-4 font-mono leading-[0.9] origin-bottom"
-                      >
-                        /
-                      </motion.span>
-                      <LetterReveal text="N" delay={0.4} className="text-7xl md:text-9xl font-bold text-white leading-[0.8]" />
-                    </div>
-                  </motion.div>
-                )}
+                    {/* Main Row: The Identity Continuum */}
+                    <motion.div 
+                      layout
+                      className="flex items-baseline justify-center tracking-tight text-white"
+                    >
+                      
+                      {/* Word 1: R -> Riyan */}
+                      <div className="flex items-baseline overflow-hidden">
+                        <motion.span 
+                          layout
+                          className={`font-bold leading-none ${stage === 2 ? "text-7xl md:text-9xl" : "text-4xl md:text-7xl"}`}
+                        >
+                          R
+                        </motion.span>
+                        
+                        <AnimatePresence>
+                          {stage === 3 && (
+                            <motion.span
+                              initial={{ width: 0, opacity: 0, filter: "blur(10px)", x: -10 }}
+                              animate={{ width: "auto", opacity: 1, filter: "blur(0px)", x: 0 }}
+                              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                              className="font-bold text-4xl md:text-7xl whitespace-nowrap"
+                            >
+                              iyan
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                      </div>
 
-                {stage === 3 && (
-                  <motion.div 
-                    key="stage3"
-                    initial={{ opacity: 0, filter: "blur(20px)", y: 20 }}
-                    animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                    transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex flex-col items-center absolute"
-                  >
-                    <LetterReveal 
-                      text="Riyan Nizar." 
-                      className="text-4xl md:text-7xl font-bold tracking-tighter text-white mb-4" 
-                    />
-                    <LetterReveal 
-                      text="Creative Technologist" 
-                      delay={0.8} 
-                      className="text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/40" 
-                    />
+                      {/* Space/Slash Dynamic Transition */}
+                      <AnimatePresence mode="wait">
+                        {stage === 2 ? (
+                          <motion.span 
+                            key="slash"
+                            initial={{ opacity: 0, scaleY: 0 }}
+                            animate={{ opacity: 1, scaleY: 1 }}
+                            exit={{ opacity: 0, width: 0, margin: 0, filter: "blur(10px)" }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            className="text-6xl md:text-8xl font-light text-white/50 mx-2 md:mx-4 font-mono leading-none origin-bottom inline-block"
+                          >
+                            /
+                          </motion.span>
+                        ) : (
+                          <motion.span 
+                            key="space"
+                            layout
+                            className="w-3 md:w-5 inline-block"
+                          />
+                        )}
+                      </AnimatePresence>
+
+                      {/* Word 2: N -> Nizar */}
+                      <div className="flex items-baseline overflow-hidden">
+                        <motion.span 
+                          layout
+                          className={`font-bold leading-none ${stage === 2 ? "text-7xl md:text-9xl" : "text-4xl md:text-7xl"}`}
+                        >
+                          N
+                        </motion.span>
+                        
+                        <AnimatePresence>
+                          {stage === 3 && (
+                            <motion.span
+                              initial={{ width: 0, opacity: 0, filter: "blur(10px)", x: -10 }}
+                              animate={{ width: "auto", opacity: 1, filter: "blur(0px)", x: 0 }}
+                              transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                              className="font-bold text-4xl md:text-7xl whitespace-nowrap"
+                            >
+                              izar.
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+
+                    {/* Subtitle Reveal anchored to parent dynamic container */}
+                    <AnimatePresence>
+                      {stage === 3 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                          transition={{ duration: 1, delay: 1 }}
+                          className="mt-6 text-xs md:text-sm font-mono tracking-[0.4em] uppercase text-white/40"
+                        >
+                          Creative Technologist
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 )}
               </AnimatePresence>

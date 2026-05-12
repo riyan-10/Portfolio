@@ -98,7 +98,7 @@ export function Hero() {
         >
           <LetterReveal text="Engineering" delay={8.8} className="justify-center text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
-            <RevealText text="Digital" delay={9.4} className="text-white/60 italic font-light" />
+            <CinematicConvergence text="Digital" delay={9.2} intensity="subtle" className="text-white/60 italic font-light" />
             <CinematicConvergence text="Realities." delay={9.6} className="text-white" />
           </div>
         </motion.h1>

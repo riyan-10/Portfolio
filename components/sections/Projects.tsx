@@ -220,9 +220,19 @@ function ProjectCard({ project, index, onClick, isFlagship = false }: { project:
 function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () => void }) {
   const { setCursorState } = useCursor();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [revealPhase, setRevealPhase] = useState<"mask" | "expanding" | "complete">("mask");
 
   useEffect(() => {
     setCursorState("default");
+    
+    // Timeline sequence for environmental emergence
+    const t1 = setTimeout(() => setRevealPhase("expanding"), 100);
+    const t2 = setTimeout(() => setRevealPhase("complete"), 2200); 
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [setCursorState]);
 
   // Hook into the scroll position of the overlay to drive cinematic background physics
@@ -237,23 +247,78 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
-      className="fixed inset-0 z-[100000] flex items-center justify-center bg-black"
+      className="fixed inset-0 z-[100000] flex items-center justify-center bg-black overflow-hidden"
     >
+      {/* Phase 1 & 2: Cinematic Environmental Mask Layer */}
+      <AnimatePresence>
+        {revealPhase !== "complete" && (
+          <motion.div 
+            className="absolute inset-0 z-[110000] flex items-center justify-center bg-black"
+            initial={{ opacity: 1 }}
+            exit={{ 
+              opacity: 0, 
+              transition: { duration: 1.2, ease: "easeInOut" }
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, filter: "blur(10px)" }}
+              animate={{ 
+                scale: revealPhase === "expanding" ? 25 : 1, 
+                opacity: 1,
+                filter: "blur(0px)",
+              }}
+              transition={{ 
+                scale: { duration: 2.4, ease: [0.33, 1, 0.68, 1] },
+                opacity: { duration: 0.6 }
+              }}
+              className="w-full flex items-center justify-center px-4 text-center transform-gpu"
+            >
+              {/* Typography Window through to project environment */}
+              <div 
+                className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none"
+                style={{
+                  backgroundImage: `url(${project.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  filter: "contrast(1.2) brightness(1.2)"
+                }}
+              >
+                {project.title.split(' ')[0]}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.div 
         layoutId={`project-container-${project.id}`}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.8 }}
         className="relative w-full h-full bg-[#050505] overflow-hidden flex flex-col"
       >
         {/* Close Button */}
-        <button 
+        <motion.button 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: revealPhase === "complete" ? 1 : 0 }}
           onClick={onClose}
           className="absolute top-8 right-8 z-50 p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-black transition-colors"
         >
           <X className="w-5 h-5" />
-        </button>
+        </motion.button>
 
         {/* Cinematic Authentic Background Engine with Parallax */}
-        <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-black">
+        <motion.div 
+          initial={{ opacity: 0, filter: "blur(20px)" }}
+          animate={{ 
+            opacity: revealPhase === "complete" ? 1 : 0,
+            filter: revealPhase === "complete" ? "blur(0px)" : "blur(20px)"
+          }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          layoutId={`project-visuals-${project.id}`} 
+          className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-black"
+        >
           <motion.div 
             style={{ y: bgY, scale: bgScale, opacity: bgOpacity }} 
             className="absolute inset-0 w-full h-full will-change-transform"
@@ -270,11 +335,6 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
           {/* Atmospheric depth layers */}
           <div className="absolute inset-0 bg-[#050505]/60 z-10" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
-          <motion.div 
-            className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/[0.05] to-transparent z-30"
-            animate={{ opacity: [0.3, 0.8, 0.3] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-          />
           
           {/* Deep vignette for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
@@ -282,8 +342,14 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
         </motion.div>
 
         {/* Cinematic Content Reveal */}
-        <div 
+        <motion.div 
           ref={scrollRef}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ 
+            opacity: revealPhase === "complete" ? 1 : 0,
+            y: revealPhase === "complete" ? 0 : 30 
+          }}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10 w-full h-full overflow-y-auto p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-16 lg:gap-32 scrollbar-hide"
         >
           
@@ -297,13 +363,7 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
               {project.title}
             </motion.h3>
             
-            {/* Sequential Diagnostic Reveal */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="mt-8 pt-8 border-t border-white/10"
-            >
+            <div className="mt-8 pt-8 border-t border-white/10">
               <h4 className="text-white/40 font-mono text-xs uppercase tracking-widest mb-4">Core Technology Node</h4>
               <div className="flex flex-wrap gap-2">
                 {project.tech.map((t: string) => (
@@ -312,40 +372,27 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <div className="flex-1 flex flex-col gap-16 text-white/60 text-lg font-light leading-relaxed pb-32">
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-            >
+            <div>
               <h4 className="text-white font-medium mb-6 uppercase tracking-widest text-xs">System Diagnostic: The Challenge</h4>
               <p>{project.challenge}</p>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-            >
+            <div>
               <h4 className="text-white font-medium mb-6 uppercase tracking-widest text-xs">Architectural Logic</h4>
               <p>{project.architecture}</p>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-              className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm"
-            >
+            <div className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
               <h4 className="text-white font-medium mb-6 uppercase tracking-widest text-xs">Calculated Impact</h4>
               <p className="text-white text-xl">{project.impact}</p>
-            </motion.div>
+            </div>
           </div>
 
-        </div>
+        </motion.div>
       </motion.div>
     </motion.div>
   );

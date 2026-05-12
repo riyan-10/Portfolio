@@ -7,17 +7,21 @@ interface CinematicConvergenceProps {
   text: string;
   delay?: number;
   className?: string;
+  intensity?: "subtle" | "high";
 }
 
-export function CinematicConvergence({ text, delay = 0, className = "" }: CinematicConvergenceProps) {
+export function CinematicConvergence({ text, delay = 0, className = "", intensity = "high" }: CinematicConvergenceProps) {
   const letters = Array.from(text);
+  
+  // Configuration factor based on selected intensity
+  const factor = intensity === "subtle" ? 0.4 : 1;
 
   const container: Variants = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
       transition: { 
-        staggerChildren: 0.08, 
+        staggerChildren: 0.06 * factor, // Speed up staggered emission marginally on subtle
         delayChildren: delay * i,
       },
     }),
@@ -25,12 +29,12 @@ export function CinematicConvergence({ text, delay = 0, className = "" }: Cinema
 
   // Pseudo-random generation based on index to avoid hydration mismatch
   const getRandomTransform = (index: number) => {
-    const seed = index * 137.5; // Golden angle approx
-    const x = Math.sin(seed) * 150;
-    const y = Math.cos(seed) * 100;
-    const z = (Math.sin(seed * 2) * -300) - 100;
-    const rotateX = Math.sin(seed * 3) * 60;
-    const rotateY = Math.cos(seed * 3) * 60;
+    const seed = index * 137.5; 
+    const x = (Math.sin(seed) * 150) * factor;
+    const y = (Math.cos(seed) * 100) * factor;
+    const z = ((Math.sin(seed * 2) * -300) - 100) * factor;
+    const rotateX = (Math.sin(seed * 3) * 60) * factor;
+    const rotateY = (Math.cos(seed * 3) * 60) * factor;
     return { x, y, z, rotateX, rotateY };
   };
 
@@ -57,7 +61,7 @@ export function CinematicConvergence({ text, delay = 0, className = "" }: Cinema
             scale: 1,
             filter: "blur(0px)",
             transition: {
-              duration: 2.2,
+              duration: 2.2 * Math.max(0.7, factor), // Ensure dynamic but tight feel
               ease: [0.16, 1, 0.3, 1],
             },
           },
@@ -68,8 +72,8 @@ export function CinematicConvergence({ text, delay = 0, className = "" }: Cinema
             z,
             rotateX,
             rotateY,
-            scale: 0.2,
-            filter: "blur(24px)",
+            scale: intensity === "subtle" ? 0.6 : 0.2,
+            filter: `blur(${24 * factor}px)`,
           },
         };
 

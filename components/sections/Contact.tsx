@@ -139,12 +139,28 @@ function NeuralNexus() {
       onMouseEnter={() => setCursorState("nexus")}
       onMouseLeave={() => setCursorState("default")}
     >
+      {/* Concentric Orbital Signal Waves */}
+      {[0, 1, 2].map((i) => (
+        <motion.div 
+          key={i}
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: [0.5, 2.5], opacity: [0, 0.15, 0] }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            delay: i * 2,
+            ease: "linear"
+          }}
+          className="absolute inset-0 rounded-full border border-white/20 pointer-events-none"
+        />
+      ))}
+
       {/* Central Background Distortion & Grid Pulse */}
       <motion.div 
         style={{ x: mouseX, y: mouseY, rotate: 0 }}
         animate={{ rotate: 360 }}
         transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 rounded-full border border-dashed border-white/5 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.01)_0%,transparent_80%)] pointer-events-none" 
+        className="absolute inset-0 rounded-full border border-dashed border-white/5 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.01)_0%,transparent_80%)] pointer-events-none z-0" 
       />
 
       {/* Dynamic High Density Neural Filaments SVG */}
@@ -181,25 +197,57 @@ function NeuralNexus() {
               {/* 2. Multi-threaded glowing propagation logic when hovered */}
               {isActive && (
                 <>
+                  {/* Main Signal Burst */}
                   <motion.path 
                     d={`M${cx},${cy} L${nx},${ny}`} 
                     stroke="url(#filamentActive)" 
-                    strokeWidth="2" 
+                    strokeWidth="2.5" 
                     fill="none"
                     filter="url(#filamentGlow)"
                     initial={{ strokeDasharray: "0, 500" }}
-                    animate={{ strokeDasharray: ["0, 500", "250, 250", "500, 0"] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    animate={{ 
+                      strokeDasharray: ["0, 500", "500, 0"],
+                      opacity: [0.5, 1, 0.5]
+                    }}
+                    transition={{ 
+                      duration: 0.7, 
+                      repeat: Infinity, 
+                      ease: "circOut" 
+                    }}
                   />
-                  {/* Offset micro-filament for technical complexity */}
+                  
+                  {/* Technical Micro-Filament Parallel jitter */}
                   <motion.path 
-                    d={`M${cx+2},${cy+2} L${nx+2},${ny+2}`} 
-                    stroke="rgba(255,255,255,0.3)" 
+                    d={`M${cx+4},${cy-4} L${nx+4},${ny-4}`} 
+                    stroke="rgba(255,255,255,0.5)" 
                     strokeWidth="0.5" 
                     fill="none"
+                    initial={{ strokeDasharray: "5, 5", opacity: 0 }}
+                    animate={{ 
+                      strokeDashoffset: [0, -20],
+                      opacity: [0, 1, 0]
+                    }}
+                    transition={{ 
+                      duration: 0.3, 
+                      repeat: Infinity, 
+                      ease: "linear" 
+                    }}
+                  />
+                  
+                  {/* Trailing Environmental ghost line */}
+                  <motion.path 
+                    d={`M${cx-3},${cy+3} L${nx-3},${ny+3}`} 
+                    stroke="rgba(255,255,255,0.1)" 
+                    strokeWidth="1" 
+                    fill="none"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                    animate={{ opacity: [0, 0.4, 0] }}
+                    transition={{ 
+                      duration: 1.2, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      delay: 0.2
+                    }}
                   />
                 </>
               )}
