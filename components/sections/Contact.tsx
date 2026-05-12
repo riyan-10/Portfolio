@@ -41,6 +41,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 export function Contact() {
+  const { setCursorState } = useCursor();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,

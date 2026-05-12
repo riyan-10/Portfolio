@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useSpring, AnimatePresence, Variants } from "framer-motion";
 import { useCursor } from "@/context/CursorContext";
 
 export function CustomCursor() {
@@ -56,7 +56,7 @@ export function CustomCursor() {
   }
 
   // Variants for morphing states
-  const variants = {
+  const variants: Variants = {
     default: {
       width: 32,
       height: 32,
@@ -111,7 +111,7 @@ export function CustomCursor() {
       scale: 1,
       rotate: 180,
       transition: {
-        rotate: { duration: 10, repeat: Infinity, ease: "linear" },
+        rotate: { duration: 10, repeat: Infinity, ease: "linear" as const },
       }
     },
     link: {
@@ -126,7 +126,7 @@ export function CustomCursor() {
     }
   };
 
-  const dotVariants = {
+  const dotVariants: Variants = {
     default: { opacity: 1, scale: 1, backgroundColor: "rgba(255,255,255,1)" },
     hover: { opacity: 0, scale: 0 },
     view: { opacity: 0, scale: 0 },
@@ -136,7 +136,7 @@ export function CustomCursor() {
       scale: [1, 1.4, 1],
       backgroundColor: "rgba(255, 255, 255, 1)",
       transition: {
-        scale: { repeat: Infinity, duration: 2, ease: "easeInOut" }
+        scale: { repeat: Infinity, duration: 2, ease: "easeInOut" as const }
       }
     },
     link: { opacity: 0, scale: 0 }
