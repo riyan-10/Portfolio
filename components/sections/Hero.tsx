@@ -94,7 +94,7 @@ export function Hero() {
         <motion.h1 
           onMouseEnter={() => setCursorState("text")}
           onMouseLeave={() => setCursorState("default")}
-          className="text-5xl md:text-8xl lg:text-[9vw] leading-[0.85] font-bold tracking-tighter mb-10 flex flex-col items-center cursor-none"
+          className="text-5xl md:text-8xl lg:text-[9vw] leading-[0.85] font-bold tracking-tighter mb-6 flex flex-col items-center cursor-none"
         >
           <LetterReveal text="Engineering" delay={8.8} className="justify-center text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">

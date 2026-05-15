@@ -67,7 +67,7 @@ export function Projects() {
   const allProjects = [flagshipProject, ...projects];
 
   return (
-    <section id="projects" ref={containerRef} className="py-32 md:py-64 relative bg-[#020202] overflow-hidden">
+    <section id="projects" ref={containerRef} className="py-20 md:py-32 relative bg-[#020202] overflow-hidden">
       {/* Scroll-Responsive Environment Grid */}
       <motion.div 
         className="absolute inset-0 z-0 pointer-events-none"
@@ -79,13 +79,13 @@ export function Projects() {
 
       <div className="relative z-10 max-w-[90rem] mx-auto px-6">
         <FadeIn>
-          <div className="flex items-end justify-between mb-24 border-b border-white/10 pb-12">
+          <div className="flex items-end justify-between mb-12 md:mb-16 border-b border-white/10 pb-8">
             <h2 className="text-4xl md:text-7xl font-bold tracking-tighter">Architecture <br/><span className="text-white/40">& Engineered Systems</span></h2>
             <p className="text-white/40 hidden md:block text-sm tracking-widest uppercase font-mono">Business-Critical Infrastructure</p>
           </div>
         </FadeIn>
 
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-10 md:gap-16">
           
           {/* FLAGSHIP SHOWCASE: TechTrolley */}
           <ProjectCard 
@@ -96,7 +96,7 @@ export function Projects() {
           />
 
           {/* Standard Architecture Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16 pt-16 border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mt-8 pt-8 md:mt-12 md:pt-12 border-t border-white/5">
             {projects.map((project, index) => (
               <ProjectCard 
                 key={project.id} 
@@ -163,12 +163,11 @@ function ProjectCard({ project, index, onClick, isFlagship = false }: { project:
 
   return (
     <motion.div 
-      layoutId={`project-container-${project.id}`}
       onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative flex flex-col gap-6 cursor-pointer group will-change-transform z-10 w-full"
+      className="relative flex flex-col gap-4 md:gap-6 cursor-pointer group will-change-transform z-10 w-full"
       style={{ perspective: 1000 }}
     >
       <FadeIn delay={index * 0.2}>
@@ -183,7 +182,7 @@ function ProjectCard({ project, index, onClick, isFlagship = false }: { project:
             style={{ background: spotlight, opacity: isHovered ? 1 : 0 }}
           />
 
-          <motion.div layoutId={`project-visuals-${project.id}`} className="absolute inset-0 z-10 overflow-hidden">
+          <div className="absolute inset-0 z-10 overflow-hidden">
             <div className="absolute inset-0 bg-black/40 mix-blend-multiply z-10" />
             <Image 
               src={project.image} 
@@ -193,24 +192,24 @@ function ProjectCard({ project, index, onClick, isFlagship = false }: { project:
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-20 opacity-90" />
             
-            <div className="absolute inset-0 z-30 p-8 flex flex-col justify-between opacity-40 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none">
+            <div className="absolute inset-0 z-30 p-4 md:p-8 flex flex-col justify-between opacity-40 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none">
               <div className="flex justify-between text-[10px] font-mono text-white/50">
                 <span className="animate-pulse">SYS.OP: {isFlagship ? "FLAGSHIP" : "STABLE"}</span>
                 <span>MEM: {42 + (index * 13)}MB / SEC</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
 
-        <div className="mt-8 flex flex-col gap-2">
-          <motion.div layoutId={`project-meta-${project.id}`} className="flex items-center gap-4 text-white/40 font-mono text-xs uppercase tracking-widest">
+        <div className="mt-4 md:mt-6 flex flex-col gap-1.5">
+          <div className="flex items-center gap-3 md:gap-4 text-white/40 font-mono text-xs uppercase tracking-widest">
             <span>{project.id}</span>
-            <div className="h-[1px] w-8 bg-white/20" />
+            <div className="h-[1px] w-6 md:w-8 bg-white/20" />
             <span className={isFlagship ? "text-white/80 font-bold" : ""}>{project.category}</span>
-          </motion.div>
-          <motion.h3 layoutId={`project-title-${project.id}`} className={`${isFlagship ? 'text-4xl md:text-6xl' : 'text-3xl'} font-bold tracking-tighter group-hover:text-white/80 transition-colors`}>
+          </div>
+          <h3 className={`${isFlagship ? 'text-3xl md:text-5xl lg:text-6xl' : 'text-2xl md:text-3xl'} font-bold tracking-tighter group-hover:text-white/80 transition-colors`}>
             {project.title}
-          </motion.h3>
+          </h3>
         </div>
       </FadeIn>
     </motion.div>
@@ -232,142 +231,124 @@ function ActiveProjectOverlay({ project, onClose }: { project: any; onClose: () 
   const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
   const bgOpacity = useTransform(scrollYProgress, [0, 0.5], [0.2, 0.05]);
 
+  // Smooth transition easing
+  const smoothEase = [0.32, 0.72, 0, 1] as const;
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
       className="fixed inset-0 z-[100000] overflow-hidden"
     >
-      {/* Isolation group: blend mode composes against environment, not parent */}
-      <div className="absolute inset-0" style={{ isolation: "isolate" }}>
+      {/* Backdrop */}
+      <motion.div 
+        className="absolute inset-0 bg-[#050505]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* Parallax Background Image */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none overflow-hidden"
+        initial={{ opacity: 0, scale: 1.1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: smoothEase }}
+      >
+        <motion.div 
+          style={{ y: bgY, scale: bgScale, opacity: bgOpacity }} 
+          className="absolute inset-0 w-full h-full will-change-transform"
+        >
+          <Image 
+            src={project.image} 
+            alt={project.title} 
+            fill 
+            priority
+            className="object-cover object-top grayscale contrast-125 mix-blend-luminosity"
+          />
+        </motion.div>
         
-        {/* LAYER 1: Environment — fades in fast so blend has content to reveal */}
-        <motion.div 
-          layoutId={`project-container-${project.id}`}
-          transition={{ duration: 0.6 }}
-          className="absolute inset-0 w-full h-full bg-[#050505] overflow-hidden"
-        >
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            layoutId={`project-visuals-${project.id}`} 
-            className="absolute inset-0 pointer-events-none overflow-hidden"
-          >
-            <motion.div 
-              style={{ y: bgY, scale: bgScale, opacity: bgOpacity }} 
-              className="absolute inset-0 w-full h-full will-change-transform"
-            >
-              <Image 
-                src={project.image} 
-                alt={project.title} 
-                fill 
-                priority
-                className="object-cover object-top grayscale contrast-125 mix-blend-luminosity"
-              />
-            </motion.div>
-            
-            {/* Atmospheric depth */}
-            <div className="absolute inset-0 bg-[#050505]/60 z-10" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent z-40" />
-          </motion.div>
-        </motion.div>
+        {/* Atmospheric depth */}
+        <div className="absolute inset-0 bg-[#050505]/60 z-10" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] z-20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent z-40" />
+      </motion.div>
 
-        {/* LAYER 2: Typography Cutout — white text = window, black bg = mask */}
-        <motion.div 
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          style={{ backgroundColor: "#000", mixBlendMode: "multiply" }}
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          transition={{ 
-            duration: 0.8,
-            delay: 1.6,
-            ease: [0.16, 1, 0.3, 1]
-          }}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ 
-              scale: 30,
-              opacity: 1,
-            }}
-            transition={{ 
-              scale: { duration: 2.2, ease: [0.33, 1, 0.68, 1] },
-              opacity: { duration: 0.4 }
-            }}
-            style={{ willChange: "transform" }}
-            className="w-full flex items-center justify-center px-4 text-center transform-gpu"
-          >
-            <h2 className="text-[15vw] font-bold tracking-tight leading-[0.8] uppercase select-none text-white">
-              {project.title.split(' ')[0]}
-            </h2>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* 
-        LAYER 3: Content Interface — enters as environment settles.
-      */}
-      <div className="absolute inset-0 z-[110000] w-full h-full overflow-hidden flex flex-col pointer-events-none">
+      {/* Content Interface */}
+      <div className="absolute inset-0 z-[110000] w-full h-full overflow-hidden flex flex-col">
+        {/* Close Button */}
         <motion.button 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 0.6 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.3, ease: smoothEase }}
           onClick={onClose}
-          className="absolute top-8 right-8 z-50 p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-black transition-colors pointer-events-auto"
+          className="absolute top-6 right-6 md:top-8 md:right-8 z-50 p-3 md:p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-black transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 md:w-5 md:h-5" />
         </motion.button>
 
+        {/* Scrollable Content */}
         <motion.div 
           ref={scrollRef}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full h-full overflow-y-auto p-8 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-16 lg:gap-32 scrollbar-hide pointer-events-auto"
+          transition={{ duration: 0.5, delay: 0.15, ease: smoothEase }}
+          className="relative z-10 w-full h-full overflow-y-auto p-6 pt-20 md:p-16 lg:p-24 flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-32 scrollbar-hide"
         >
           
-          <div className="flex-1 flex flex-col gap-6 lg:sticky top-0 h-fit">
-            <motion.div layoutId={`project-meta-${project.id}`} className="flex items-center gap-4 text-white/40 font-mono text-xs uppercase tracking-widest">
+          {/* Left: Title & Tech */}
+          <motion.div 
+            className="flex-1 flex flex-col gap-4 md:gap-6 lg:sticky top-0 h-fit"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.25, ease: smoothEase }}
+          >
+            <div className="flex items-center gap-4 text-white/40 font-mono text-xs uppercase tracking-widest">
               <span>{project.id}</span>
               <div className="h-[1px] w-12 bg-white/20" />
               <span>{project.category}</span>
-            </motion.div>
-            <motion.h3 layoutId={`project-title-${project.id}`} className="text-5xl md:text-8xl font-bold tracking-tighter mb-8">
+            </div>
+            <h3 className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter mb-4 md:mb-8">
               {project.title}
-            </motion.h3>
+            </h3>
             
-            <div className="mt-8 pt-8 border-t border-white/10">
-              <h4 className="text-white/40 font-mono text-xs uppercase tracking-widest mb-4">Core Technology Node</h4>
+            <div className="mt-4 md:mt-8 pt-6 md:pt-8 border-t border-white/10">
+              <h4 className="text-white/40 font-mono text-xs uppercase tracking-widest mb-3 md:mb-4">Core Technology Node</h4>
               <div className="flex flex-wrap gap-2">
                 {project.tech.map((t: string) => (
-                  <span key={t} className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs tracking-widest text-white/80">
+                  <span key={t} className="px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/5 border border-white/10 text-xs tracking-widest text-white/80">
                     {t}
                   </span>
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="flex-1 flex flex-col gap-16 text-white/60 text-lg font-light leading-relaxed pb-32">
+          {/* Right: Details */}
+          <motion.div 
+            className="flex-1 flex flex-col gap-10 md:gap-16 text-white/60 text-base md:text-lg font-light leading-relaxed pb-16 md:pb-32"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.35, ease: smoothEase }}
+          >
             <div>
-              <h4 className="text-white font-medium mb-6 uppercase tracking-widest text-xs">System Diagnostic: The Challenge</h4>
+              <h4 className="text-white font-medium mb-4 md:mb-6 uppercase tracking-widest text-xs">System Diagnostic: The Challenge</h4>
               <p>{project.challenge}</p>
             </div>
             
             <div>
-              <h4 className="text-white font-medium mb-6 uppercase tracking-widest text-xs">Architectural Logic</h4>
+              <h4 className="text-white font-medium mb-4 md:mb-6 uppercase tracking-widest text-xs">Architectural Logic</h4>
               <p>{project.architecture}</p>
             </div>
             
-            <div className="p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-              <h4 className="text-white font-medium mb-6 uppercase tracking-widest text-xs">Calculated Impact</h4>
-              <p className="text-white text-xl">{project.impact}</p>
+            <div className="p-6 md:p-8 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+              <h4 className="text-white font-medium mb-4 md:mb-6 uppercase tracking-widest text-xs">Calculated Impact</h4>
+              <p className="text-white text-lg md:text-xl">{project.impact}</p>
             </div>
-          </div>
+          </motion.div>
 
         </motion.div>
       </div>

@@ -19,7 +19,7 @@ export function About() {
   const envOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.1, 0.4, 0.4, 0.1]);
 
   return (
-    <section id="about" className="py-48 md:py-64 relative bg-[#050505] overflow-hidden" ref={containerRef}>
+    <section id="about" className="py-20 md:py-32 relative bg-[#050505] overflow-hidden" ref={containerRef}>
       {/* Scroll-Responsive Environment */}
       <motion.div 
         className="absolute inset-0 z-0 pointer-events-none"
@@ -33,7 +33,7 @@ export function About() {
         
         {/* Editorial Section Header */}
         <FadeIn>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-32 md:mb-48 border-b border-white/10 pb-12 gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 border-b border-white/10 pb-8 gap-6">
             <h2 className="text-4xl md:text-7xl font-bold tracking-tighter">
               Creative <br />
               <span className="text-white/40 italic font-light">Technologist.</span>
@@ -45,7 +45,7 @@ export function About() {
         </FadeIn>
 
         {/* Asymmetric Split Layout */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 items-center">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
           
           {/* Left Column: Authentic Profile Image */}
           <motion.div style={{ y: y1 }} className="flex-1 w-full relative aspect-[3/4] md:aspect-square lg:aspect-[3/4] bg-[#0a0a0a] rounded-sm overflow-hidden border border-white/5">
@@ -72,7 +72,7 @@ export function About() {
           </motion.div>
 
           {/* Right Column: Editorial Text Blocks */}
-          <div className="flex-1 flex flex-col justify-center gap-16 lg:gap-24">
+          <div className="flex-1 flex flex-col justify-center gap-10 lg:gap-16">
             
             <FadeIn delay={0.2}>
               <h3 className="text-2xl md:text-4xl font-light tracking-tight leading-snug">

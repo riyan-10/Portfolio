@@ -1,18 +1,12 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useInView, useSpring } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { LetterReveal } from "@/components/animations/LetterReveal";
 import { RevealText } from "@/components/animations/RevealText";
-import { Mail } from "lucide-react";
+import { Send } from "lucide-react";
 import { useCursor } from "@/context/CursorContext";
-
-const TwitterIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-  </svg>
-);
 
 const LinkedinIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -40,30 +34,25 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const MailIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect width="20" height="16" x="2" y="4" rx="2"/>
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+  </svg>
+);
+
 export function Contact() {
   const { setCursorState } = useCursor();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"],
-  });
-
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.8, 1]);
-  const yParallax = useTransform(scrollYProgress, [0, 1], ["20%", "0%"]);
 
   return (
-    <section id="contact" ref={containerRef} className="relative pt-48 pb-12 px-6 min-h-screen flex flex-col justify-between bg-black overflow-hidden">
-      <motion.div 
-        className="absolute inset-0 z-0 pointer-events-none bg-black"
-        style={{ opacity: bgOpacity }}
-      />
-      
+    <section id="contact" ref={containerRef} className="relative pt-20 md:pt-32 pb-12 px-6 min-h-screen flex flex-col justify-between bg-black overflow-hidden">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.03] blur-[120px] rounded-t-full z-0 pointer-events-none" />
 
-      <motion.div style={{ y: yParallax }} className="max-w-[90rem] mx-auto w-full relative z-10 flex-1 flex flex-col justify-center items-center text-center">
+      <div className="max-w-[90rem] mx-auto w-full relative z-10 flex-1 flex flex-col justify-center items-center text-center">
         
         <FadeIn delay={0.2}>
-          <div className="flex items-center gap-4 mb-16">
+          <div className="flex items-center gap-4 mb-8 md:mb-12">
             <div className="h-[1px] w-8 bg-white/20" />
             <p className="text-white/30 tracking-[0.4em] uppercase text-[10px] font-mono">
               Neural Connection Interface
@@ -75,7 +64,7 @@ export function Contact() {
         <motion.h2 
           onMouseEnter={() => setCursorState("text")}
           onMouseLeave={() => setCursorState("default")}
-          className="text-5xl md:text-[8vw] leading-[0.85] font-bold tracking-tighter mb-32 flex flex-col items-center cursor-none"
+          className="text-5xl md:text-[8vw] leading-[0.85] font-bold tracking-tighter mb-12 md:mb-16 flex flex-col items-center cursor-none"
         >
           <LetterReveal text="Establish" delay={0.6} className="text-white" />
           <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
@@ -84,14 +73,14 @@ export function Contact() {
           </div>
         </motion.h2>
 
-        {/* AI Communication Nexus */}
-        <FadeIn delay={2.2} direction="up" className="w-full flex justify-center mt-12 mb-32 relative">
+        {/* Neural Nexus with scroll-triggered animation */}
+        <div className="w-full flex justify-center mt-4 md:mt-8 mb-12 md:mb-16 relative">
           <NeuralNexus />
-        </FadeIn>
+        </div>
 
-      </motion.div>
+      </div>
 
-      <div className="max-w-[90rem] mx-auto w-full relative z-10 mt-32 border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-8 text-white/40 text-xs font-mono uppercase tracking-widest">
+      <div className="max-w-[90rem] mx-auto w-full relative z-10 mt-12 md:mt-16 border-t border-white/5 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-8 text-white/40 text-xs font-mono uppercase tracking-widest">
         <FadeIn delay={3.2}>
           <p className="opacity-50">SYS.VER 1.0.0 © {new Date().getFullYear()}</p>
         </FadeIn>
@@ -100,10 +89,32 @@ export function Contact() {
   );
 }
 
+// --- Social node config ---
+const nodes = [
+  { id: "instagram", label: "Instagram", icon: InstagramIcon, angle: -144, href: "#" },
+  { id: "whatsapp", label: "WhatsApp", icon: WhatsAppIcon, angle: -72, href: "#" },
+  { id: "linkedin", label: "LinkedIn", icon: LinkedinIcon, angle: 0, href: "#" },
+  { id: "mail", label: "Mail", icon: MailIcon, angle: 72, href: "mailto:hello@example.com" },
+  { id: "github", label: "GitHub", icon: GithubIcon, angle: 144, href: "#" },
+];
+
 function NeuralNexus() {
   const nexusRef = useRef<HTMLDivElement>(null);
   const { setCursorState } = useCursor();
   const [activeNode, setActiveNode] = useState<string | null>(null);
+  const isInView = useInView(nexusRef, { once: true, margin: "-100px" });
+  const [phase, setPhase] = useState(0);
+
+  // Animation timeline driven by scroll into view
+  useEffect(() => {
+    if (!isInView) return;
+    // Phase 1: dot appears (immediate)
+    setPhase(1);
+    const t2 = setTimeout(() => setPhase(2), 500);   // dot → button
+    const t3 = setTimeout(() => setPhase(3), 1000);   // branches grow
+    const t4 = setTimeout(() => setPhase(4), 1800);   // nodes appear
+    return () => { clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+  }, [isInView]);
 
   const mouseX = useSpring(0, { stiffness: 100, damping: 30 });
   const mouseY = useSpring(0, { stiffness: 100, damping: 30 });
@@ -121,228 +132,252 @@ function NeuralNexus() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
-  // Define 5 satellite configuration data
-  const nodes = [
-    { id: "linkedin", label: "LinkedIn", icon: <LinkedinIcon className="w-5 h-5" />, angle: -144, href: "#" },
-    { id: "twitter", label: "X.com", icon: <TwitterIcon className="w-5 h-5" />, angle: -72, href: "#" },
-    { id: "whatsapp", label: "WhatsApp", icon: <WhatsAppIcon className="w-5 h-5" />, angle: 0, href: "#" },
-    { id: "github", label: "GitHub", icon: <GithubIcon className="w-5 h-5" />, angle: 72, href: "#" },
-    { id: "instagram", label: "Instagram", icon: <InstagramIcon className="w-5 h-5" />, angle: 144, href: "#" }
-  ];
-
-  const cx = 250, cy = 250, r = 180; // Center and Radius
+  const cx = 250, cy = 250, r = 160;
 
   return (
     <div 
       ref={nexusRef} 
-      className="relative w-[300px] h-[300px] md:w-[550px] md:h-[550px] flex items-center justify-center"
+      className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px] flex items-center justify-center"
       onMouseEnter={() => setCursorState("nexus")}
       onMouseLeave={() => setCursorState("default")}
     >
-      {/* Concentric Orbital Signal Waves */}
-      {[0, 1, 2].map((i) => (
+      {/* Concentric pulse waves */}
+      {phase >= 2 && [0, 1, 2].map((i) => (
         <motion.div 
           key={i}
           initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: [0.5, 2.5], opacity: [0, 0.15, 0] }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            delay: i * 2,
-            ease: "linear"
-          }}
+          animate={{ scale: [0.5, 2.5], opacity: [0, 0.1, 0] }}
+          transition={{ duration: 6, repeat: Infinity, delay: i * 2, ease: "linear" }}
           className="absolute inset-0 rounded-full border border-white/20 pointer-events-none"
         />
       ))}
 
-      {/* Central Background Distortion & Grid Pulse */}
-      <motion.div 
-        style={{ x: mouseX, y: mouseY, rotate: 0 }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 rounded-full border border-dashed border-white/5 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.01)_0%,transparent_80%)] pointer-events-none z-0" 
-      />
+      {/* Rotating dashed orbit */}
+      {phase >= 2 && (
+        <motion.div 
+          style={{ x: mouseX, y: mouseY }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full border border-dashed border-white/5 pointer-events-none z-0" 
+        />
+      )}
 
-      {/* Dynamic High Density Neural Filaments SVG */}
+      {/* SVG branches - grow from center to nodes */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
         <defs>
-          <linearGradient id="filamentActive" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="branchGlow" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="rgba(255,255,255,0.0)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.8)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.6)" />
             <stop offset="100%" stopColor="rgba(255,255,255,0.0)" />
           </linearGradient>
-          <filter id="filamentGlow">
+          <filter id="lineGlow">
             <feGaussianBlur stdDeviation="2" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
         
-        {nodes.map((node) => {
+        {nodes.map((node, i) => {
           const rad = (node.angle - 90) * (Math.PI / 180);
           const nx = cx + r * Math.cos(rad);
           const ny = cy + r * Math.sin(rad);
           const isActive = activeNode === node.id;
           
-          // Generating triple filaments per connection node for circuit complexity
           return (
-            <g key={`path-${node.id}`}>
-              {/* 1. Subtle background filament */}
-              <motion.path 
-                d={`M${cx},${cy} L${nx},${ny}`} 
-                stroke="rgba(255,255,255,0.05)" 
-                strokeWidth="1" 
-                fill="none" 
+            <g key={`branch-${node.id}`}>
+              {/* Base branch line */}
+              <motion.line 
+                x1={cx} y1={cy} x2={nx} y2={ny}
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth="1"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={phase >= 3 ? { pathLength: 1, opacity: 1 } : {}}
+                transition={{ duration: 0.6, delay: i * 0.12, ease: [0.32, 0.72, 0, 1] }}
               />
-              
-              {/* 2. Multi-threaded glowing propagation logic when hovered */}
+              {/* Active glow line */}
               {isActive && (
-                <>
-                  {/* Main Signal Burst */}
-                  <motion.path 
-                    d={`M${cx},${cy} L${nx},${ny}`} 
-                    stroke="url(#filamentActive)" 
-                    strokeWidth="2.5" 
-                    fill="none"
-                    filter="url(#filamentGlow)"
-                    initial={{ strokeDasharray: "0, 500" }}
-                    animate={{ 
-                      strokeDasharray: ["0, 500", "500, 0"],
-                      opacity: [0.5, 1, 0.5]
-                    }}
-                    transition={{ 
-                      duration: 0.7, 
-                      repeat: Infinity, 
-                      ease: "circOut" 
-                    }}
-                  />
-                  
-                  {/* Technical Micro-Filament Parallel jitter */}
-                  <motion.path 
-                    d={`M${cx+4},${cy-4} L${nx+4},${ny-4}`} 
-                    stroke="rgba(255,255,255,0.5)" 
-                    strokeWidth="0.5" 
-                    fill="none"
-                    initial={{ strokeDasharray: "5, 5", opacity: 0 }}
-                    animate={{ 
-                      strokeDashoffset: [0, -20],
-                      opacity: [0, 1, 0]
-                    }}
-                    transition={{ 
-                      duration: 0.3, 
-                      repeat: Infinity, 
-                      ease: "linear" 
-                    }}
-                  />
-                  
-                  {/* Trailing Environmental ghost line */}
-                  <motion.path 
-                    d={`M${cx-3},${cy+3} L${nx-3},${ny+3}`} 
-                    stroke="rgba(255,255,255,0.1)" 
-                    strokeWidth="1" 
-                    fill="none"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 0.4, 0] }}
-                    transition={{ 
-                      duration: 1.2, 
-                      repeat: Infinity, 
-                      ease: "easeInOut",
-                      delay: 0.2
-                    }}
-                  />
-                </>
+                <motion.line 
+                  x1={cx} y1={cy} x2={nx} y2={ny}
+                  stroke="url(#branchGlow)"
+                  strokeWidth="2"
+                  filter="url(#lineGlow)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: [0, 1], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 0.7, repeat: Infinity, ease: "circOut" }}
+                />
               )}
             </g>
           );
         })}
       </svg>
 
-      {/* Orbital Nodes Generation mapped dynamically from configuration */}
-      {nodes.map((node) => {
+      {/* Social nodes at branch endpoints */}
+      {nodes.map((node, i) => {
         const rad = (node.angle - 90) * (Math.PI / 180);
-        // Convert relative position percentage for outer bounding wrapper positioning
         const leftPercent = 50 + (r / 5) * Math.cos(rad);
         const topPercent = 50 + (r / 5) * Math.sin(rad);
+        const NodeIcon = node.icon;
 
         return (
-          <div 
+          <motion.a
             key={node.id}
-            style={{ 
+            href={node.href}
+            target={node.id !== "mail" ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={phase >= 4 ? { scale: 1, opacity: 1 } : {}}
+            transition={{ duration: 0.4, delay: i * 0.1, ease: [0.32, 0.72, 0, 1] }}
+            onMouseEnter={() => { setActiveNode(node.id); setCursorState("link"); }}
+            onMouseLeave={() => { setActiveNode(null); setCursorState("nexus"); }}
+            style={{
               position: "absolute",
               left: `${leftPercent}%`,
               top: `${topPercent}%`,
-              transform: "translate(-50%, -50%)"
+              transform: "translate(-50%, -50%)",
             }}
+            className="relative z-20 w-14 h-14 md:w-18 md:h-18 rounded-full bg-[#050505] border border-white/10 flex items-center justify-center group hover:bg-white hover:border-transparent transition-colors duration-500"
+            whileHover={{ scale: 1.15 }}
           >
-            <NeuralNode 
-              icon={node.icon} 
-              label={node.label} 
-              href={node.href} 
-              onHover={() => {
-                setActiveNode(node.id);
-                setCursorState("link");
-              }} 
-              onLeave={() => {
-                setActiveNode(null);
-                setCursorState("nexus");
-              }} 
-            />
-          </div>
+            <div className="text-white/60 group-hover:text-black transition-colors duration-500">
+              <NodeIcon className="w-5 h-5" />
+            </div>
+            <div className="absolute -bottom-7 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[9px] font-mono tracking-widest text-white/50 uppercase whitespace-nowrap">
+              {node.label}
+            </div>
+          </motion.a>
         );
       })}
 
-      {/* Core Connection Point */}
-      <CoreNode isNetworkActive={activeNode !== null} />
+      {/* Center: Dot → Submit Button */}
+      <CenterButton phase={phase} />
     </div>
   );
 }
 
-function CoreNode({ isNetworkActive }: { isNetworkActive: boolean }) {
+function CenterButton({ phase }: { phase: number }) {
   const { setCursorState } = useCursor();
-  
+  const [formOpen, setFormOpen] = useState(false);
+
   return (
-    <motion.a
-      href="mailto:hello@example.com"
-      onMouseEnter={() => setCursorState("hover")}
-      onMouseLeave={() => setCursorState("nexus")}
-      className="relative z-20 w-32 h-32 md:w-44 md:h-44 rounded-full bg-black border border-white/20 flex flex-col items-center justify-center gap-2 group shadow-[0_0_80px_rgba(255,255,255,0.03)] hover:shadow-[0_0_100px_rgba(255,255,255,0.08)] transition-all duration-700"
-      whileHover={{ scale: 1.05 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    >
-      <div className="absolute inset-0 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
-      
-      <div className="absolute inset-0 rounded-full z-0 pointer-events-none mix-blend-overlay opacity-40 group-hover:opacity-80 transition-opacity duration-700 overflow-hidden"
-           style={{ background: "repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 3px)" }} />
-           
-      <motion.div 
-        animate={{ scale: isNetworkActive ? 1.1 : 1, opacity: isNetworkActive ? 0.6 : 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 flex flex-col items-center"
+    <>
+      {/* Phase 1: Small white dot */}
+      <motion.div
+        className="absolute z-30 rounded-full bg-white pointer-events-none"
+        initial={{ width: 0, height: 0, opacity: 0 }}
+        animate={
+          phase === 1 
+            ? { width: 12, height: 12, opacity: 1 } 
+            : phase >= 2 
+              ? { width: 0, height: 0, opacity: 0 } 
+              : {}
+        }
+        transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+        style={{ left: "50%", top: "50%", x: "-50%", y: "-50%" }}
+      />
+
+      {/* Phase 2+: Full button */}
+      <motion.button
+        onClick={() => setFormOpen(true)}
+        onMouseEnter={() => setCursorState("hover")}
+        onMouseLeave={() => setCursorState("nexus")}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={phase >= 2 ? { scale: 1, opacity: 1 } : {}}
+        transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+        whileHover={{ scale: 1.05 }}
+        className="relative z-30 w-28 h-28 md:w-36 md:h-36 rounded-full bg-black border border-white/20 flex flex-col items-center justify-center gap-2 group shadow-[0_0_80px_rgba(255,255,255,0.03)] hover:shadow-[0_0_100px_rgba(255,255,255,0.08)] hover:bg-white hover:text-black transition-all duration-700"
       >
-        <Mail className="w-6 h-6 md:w-7 md:h-7 text-white/80 group-hover:text-white transition-colors mb-2" />
-        <span className="text-white/50 group-hover:text-white text-[9px] font-mono uppercase tracking-[0.25em] transition-colors">
-          Direct Transmission
+        <div className="absolute inset-0 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
+        <Send className="w-5 h-5 md:w-6 md:h-6 text-white/80 group-hover:text-black transition-colors mb-1" />
+        <span className="text-white/50 group-hover:text-black text-[8px] md:text-[9px] font-mono uppercase tracking-[0.2em] transition-colors">
+          Send Message
         </span>
-      </motion.div>
-    </motion.a>
+      </motion.button>
+
+      {/* Contact Form Modal */}
+      {formOpen && <ContactFormModal onClose={() => setFormOpen(false)} />}
+    </>
   );
 }
 
-function NeuralNode({ icon, label, href, onHover, onLeave }: { icon: React.ReactNode; label: string; href: string; onHover: () => void; onLeave: () => void }) {
+function ContactFormModal({ onClose }: { onClose: () => void }) {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Build mailto link with form data
+    const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`);
+    window.open(`mailto:hello@example.com?subject=${subject}&body=${body}`, "_self");
+    setSubmitted(true);
+    setTimeout(onClose, 2000);
+  };
+
   return (
-    <motion.a
-      href={href}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-      className="relative z-20 w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#050505] border border-white/10 flex items-center justify-center group hover:bg-white hover:border-transparent transition-colors duration-500"
-      whileHover={{ scale: 1.1 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-[10000] flex items-center justify-center px-4"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="text-white/60 group-hover:text-black transition-colors duration-500">
-        {icon}
-      </div>
-      <div className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[10px] font-mono tracking-widest text-white/50 uppercase whitespace-nowrap">
-        {label}
-      </div>
-    </motion.a>
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      
+      <motion.form
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+        onSubmit={handleSubmit}
+        className="relative z-10 w-full max-w-md bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col gap-5"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-bold tracking-tight">Direct Transmission</h3>
+          <button type="button" onClick={onClose} className="text-white/40 hover:text-white text-sm transition-colors">✕</button>
+        </div>
+
+        {submitted ? (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 text-center">
+            <p className="text-white/60 font-mono text-sm">Message routed successfully.</p>
+          </motion.div>
+        ) : (
+          <>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Name</label>
+              <input
+                type="text" required value={formData.name}
+                onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-white/30 transition-colors"
+                placeholder="Your name"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Email</label>
+              <input
+                type="email" required value={formData.email}
+                onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-white/30 transition-colors"
+                placeholder="your@email.com"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Message</label>
+              <textarea
+                required rows={4} value={formData.message}
+                onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-white/30 transition-colors resize-none"
+                placeholder="Your message..."
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-2 w-full py-3 bg-white text-black rounded-full font-medium text-sm tracking-wide hover:bg-white/90 transition-colors flex items-center justify-center gap-2"
+            >
+              <Send className="w-4 h-4" />
+              Transmit Message
+            </button>
+          </>
+        )}
+      </motion.form>
+    </motion.div>
   );
 }
