@@ -26,6 +26,12 @@ const MailIcon = ({ className }: { className?: string }) => (
 
 const ease4 = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
+// Propagation order: center-top first, then symmetrically outward
+// Index in NODES:  0=github(-160), 1=linkedin(-125), 2=whatsapp(-90), 3=instagram(-55), 4=mail(-20)
+// Ripple order:    whatsapp(0) → linkedin+instagram(1) → github+mail(2)
+const RIPPLE_DELAY = [0.30, 0.15, 0, 0.15, 0.30]; // seconds, relative
+const RIPPLE_DUR   = [1.35, 1.20, 1.0, 1.20, 1.35]; // longer for outer = more organic
+
 // Symmetrical arc: 5 nodes evenly spread across upper hemisphere
 // Angles measured from positive-x axis, counter-clockwise
 // -160, -125, -90, -55, -20 => perfectly mirrored about -90 (top)
@@ -113,15 +119,16 @@ function NeuralNexus({ onInitiate }: { onInitiate: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { setCursorState } = useCursor();
   const [active, setActive] = useState<string | null>(null);
-  const inView = useInView(ref, { once: true, margin: "-120px" });
+  const inView = useInView(ref, { once: true, margin: "-60px" });
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
     if (!inView) return;
-    setPhase(1);
-    const t2 = setTimeout(() => setPhase(2), 1100);
-    const t3 = setTimeout(() => setPhase(3), 2400);
-    const t4 = setTimeout(() => setPhase(4), 3800);
+    // Compressed cinematic timeline — responsive yet luxurious
+    setPhase(1);                                          // Dormant dot: immediate
+    const t2 = setTimeout(() => setPhase(2), 500);        // Core morphs: 0.5s
+    const t3 = setTimeout(() => setPhase(3), 1200);       // Pathways propagate: 1.2s
+    const t4 = setTimeout(() => setPhase(4), 2100);       // Nodes emerge: 2.1s
     return () => { clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
   }, [inView]);
 
@@ -169,7 +176,7 @@ function NeuralNexus({ onInitiate }: { onInitiate: () => void }) {
                 d={curve.d} stroke="rgba(255,255,255,0.05)" strokeWidth="1" fill="none"
                 initial={{ pathLength: 0 }}
                 animate={phase >= 3 ? { pathLength: 1 } : {}}
-                transition={{ duration: 1.6, delay: i * 0.2, ease: ease4 }}
+                transition={{ duration: RIPPLE_DUR[i], delay: RIPPLE_DELAY[i], ease: ease4 }}
               />
               {/* Signal propagation on phase 3 entry */}
               <motion.path
@@ -177,14 +184,14 @@ function NeuralNexus({ onInitiate }: { onInitiate: () => void }) {
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={
                   phase === 3
-                    ? { pathLength: [0, 1], opacity: [0, 0.6, 0] }
+                    ? { pathLength: [0, 1], opacity: [0, 0.5, 0] }
                     : isActive
                       ? { pathLength: 1, opacity: 0.5 }
                       : { pathLength: 1, opacity: 0 }
                 }
                 transition={
                   phase === 3
-                    ? { duration: 2, delay: i * 0.2, ease: "easeInOut" }
+                    ? { duration: RIPPLE_DUR[i] * 1.3, delay: RIPPLE_DELAY[i], ease: "easeInOut" }
                     : { duration: 0.5, ease: ease4 }
                 }
                 filter={isActive ? "url(#ng)" : undefined}
@@ -204,9 +211,9 @@ function NeuralNexus({ onInitiate }: { onInitiate: () => void }) {
             href={node.href}
             target={node.id === "mail" ? "_self" : "_blank"}
             rel="noopener noreferrer"
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={phase >= 4 ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 0.8, delay: i * 0.12, ease: ease4 }}
+            transition={{ duration: 0.7, delay: RIPPLE_DELAY[i] * 0.6, ease: ease4 }}
             onMouseEnter={() => { setActive(node.id); setCursorState("link"); }}
             onMouseLeave={() => { setActive(null); setCursorState("nexus"); }}
             style={{
@@ -242,15 +249,15 @@ function NeuralNexus({ onInitiate }: { onInitiate: () => void }) {
           initial={{ scale: 0, opacity: 0 }}
           animate={
             phase === 1
-              ? { scale: [1, 1.3, 1], opacity: [0, 0.7, 0.4] }
+              ? { scale: [1, 1.2, 1], opacity: [0, 0.8, 0.5] }
               : phase >= 2
                 ? { scale: 0, opacity: 0 }
                 : {}
           }
           transition={
             phase === 1
-              ? { scale: { duration: 2.5, repeat: Infinity, repeatType: "reverse" as const, ease: "easeInOut" }, opacity: { duration: 1, ease: ease4 } }
-              : { duration: 0.6, ease: ease4 }
+              ? { scale: { duration: 1.6, repeat: Infinity, repeatType: "reverse" as const, ease: "easeInOut" }, opacity: { duration: 0.6, ease: ease4 } }
+              : { duration: 0.5, ease: ease4 }
           }
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white pointer-events-none"
         />
@@ -262,7 +269,7 @@ function NeuralNexus({ onInitiate }: { onInitiate: () => void }) {
           onMouseLeave={() => setCursorState("nexus")}
           initial={{ scale: 0, opacity: 0 }}
           animate={phase >= 2 ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 1.4, ease: ease4 }}
+          transition={{ duration: 1.0, ease: ease4 }}
           whileHover={{ scale: 1.04 }}
           className="relative w-24 h-24 md:w-[110px] md:h-[110px] rounded-full bg-black border border-white/10 flex flex-col items-center justify-center gap-2 group hover:border-white/20 transition-all duration-700 overflow-hidden"
         >
