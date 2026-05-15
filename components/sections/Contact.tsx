@@ -8,6 +8,7 @@ import { RevealText } from "@/components/animations/RevealText";
 import { Send } from "lucide-react";
 import { useCursor } from "@/context/CursorContext";
 
+// Highly optimized, clean SVG Icons
 const LinkedinIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -41,90 +42,122 @@ const MailIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+// Cinematic easing curve
+const smoothEase = [0.16, 1, 0.3, 1] as [number, number, number, number];
+
 export function Contact() {
   const { setCursorState } = useCursor();
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="contact" ref={containerRef} className="relative pt-20 md:pt-32 pb-12 px-6 min-h-screen flex flex-col justify-between bg-black overflow-hidden">
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.03] blur-[120px] rounded-t-full z-0 pointer-events-none" />
+    <section 
+      id="contact" 
+      ref={containerRef} 
+      className="relative pt-24 pb-16 px-6 min-h-[90vh] flex flex-col justify-between bg-black overflow-hidden"
+    >
+      {/* Deep Atmospheric Backdrop Layer */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] md:w-[1000px] md:h-[500px] bg-white/[0.02] blur-[120px] rounded-t-full z-0 pointer-events-none" />
 
-      <div className="max-w-[90rem] mx-auto w-full relative z-10 flex-1 flex flex-col justify-center items-center text-center">
+      <div className="max-w-[90rem] mx-auto w-full relative z-10 flex-1 flex flex-col justify-center items-center text-center mt-12">
         
-        <FadeIn delay={0.2}>
-          <div className="flex items-center gap-4 mb-8 md:mb-12">
-            <div className="h-[1px] w-8 bg-white/20" />
-            <p className="text-white/30 tracking-[0.4em] uppercase text-[10px] font-mono">
-              Neural Connection Interface
+        <FadeIn delay={0.1}>
+          <div className="flex items-center justify-center gap-4 mb-10 md:mb-14">
+            <div className="h-[1px] w-6 bg-white/15" />
+            <p className="text-white/25 tracking-[0.4em] uppercase text-[9px] font-mono font-medium">
+              Neural Nexus Activation
             </p>
-            <div className="h-[1px] w-8 bg-white/20" />
+            <div className="h-[1px] w-6 bg-white/15" />
           </div>
         </FadeIn>
 
         <motion.h2 
           onMouseEnter={() => setCursorState("text")}
           onMouseLeave={() => setCursorState("default")}
-          className="text-5xl md:text-[8vw] leading-[0.85] font-bold tracking-tighter mb-12 md:mb-16 flex flex-col items-center cursor-none"
+          className="text-5xl md:text-[7.5vw] leading-[0.9] font-bold tracking-tighter mb-14 md:mb-20 flex flex-col items-center cursor-none pointer-events-auto"
         >
-          <LetterReveal text="Establish" delay={0.6} className="text-white" />
-          <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-8 mt-2">
-            <RevealText text="Direct" delay={1.2} className="text-white/40 italic font-light" />
-            <RevealText text="Link." delay={1.5} className="text-white" />
+          <LetterReveal text="Establish" delay={0.3} className="text-white" />
+          <div className="flex flex-wrap justify-center items-center gap-x-4 md:gap-x-6 mt-2">
+            <RevealText text="Direct" delay={0.6} className="text-white/30 italic font-light" />
+            <RevealText text="Link." delay={0.8} className="text-white" />
           </div>
         </motion.h2>
 
-        {/* Neural Nexus with scroll-triggered animation */}
-        <div className="w-full flex justify-center mt-4 md:mt-8 mb-12 md:mb-16 relative">
+        {/* Intelligent Awakening System */}
+        <div className="w-full flex justify-center items-center mt-4 md:mt-8 relative min-h-[380px] md:min-h-[520px]">
           <NeuralNexus />
         </div>
 
       </div>
 
-      <div className="max-w-[90rem] mx-auto w-full relative z-10 mt-12 md:mt-16 border-t border-white/5 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-8 text-white/40 text-xs font-mono uppercase tracking-widest">
-        <FadeIn delay={3.2}>
-          <p className="opacity-50">SYS.VER 1.0.0 © {new Date().getFullYear()}</p>
+      <div className="max-w-[90rem] mx-auto w-full relative z-10 mt-16 border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-white/30 text-[10px] font-mono uppercase tracking-[0.2em]">
+        <FadeIn delay={1.5}>
+          <div className="flex items-center gap-3">
+            <span className="w-1 h-1 rounded-full bg-white/40 animate-pulse" />
+            <p className="opacity-60 font-light">SYSTEM OPERATIONAL 1.0.0</p>
+          </div>
+        </FadeIn>
+        <FadeIn delay={1.7}>
+          <p className="opacity-40 font-light">© {new Date().getFullYear()} ALL ARCHITECTURAL INTEGRITY SECURED.</p>
         </FadeIn>
       </div>
     </section>
   );
 }
 
-// --- Social node config ---
+// Perfectly balanced spatial destination nodes
 const nodes = [
-  { id: "instagram", label: "Instagram", icon: InstagramIcon, angle: -144, href: "#" },
-  { id: "whatsapp", label: "WhatsApp", icon: WhatsAppIcon, angle: -72, href: "#" },
-  { id: "linkedin", label: "LinkedIn", icon: LinkedinIcon, angle: 0, href: "#" },
-  { id: "mail", label: "Mail", icon: MailIcon, angle: 72, href: "mailto:hello@example.com" },
-  { id: "github", label: "GitHub", icon: GithubIcon, angle: 144, href: "#" },
+  { id: "github", label: "GitHub", icon: GithubIcon, href: "#", angle: -150, radiusOffset: 0 },
+  { id: "linkedin", label: "LinkedIn", icon: LinkedinIcon, href: "#", angle: -120, radiusOffset: 20 },
+  { id: "whatsapp", label: "WhatsApp", icon: WhatsAppIcon, href: "#", angle: -90, radiusOffset: 35 },
+  { id: "instagram", label: "Instagram", icon: InstagramIcon, href: "#", angle: -60, radiusOffset: 20 },
+  { id: "mail", label: "Email", icon: MailIcon, href: "mailto:hello@example.com", angle: -30, radiusOffset: 0 },
 ];
 
 function NeuralNexus() {
   const nexusRef = useRef<HTMLDivElement>(null);
   const { setCursorState } = useCursor();
   const [activeNode, setActiveNode] = useState<string | null>(null);
-  const isInView = useInView(nexusRef, { once: true, margin: "-100px" });
+  const isInView = useInView(nexusRef, { once: true, margin: "-150px" });
   const [phase, setPhase] = useState(0);
 
-  // Animation timeline driven by scroll into view
+  // Symmetrical Coordinate Space Configuration
+  const cx = 250;
+  const cy = 320; // Anchored slightly lower to provide an upward arcing trajectory
+  const baseRadius = 190;
+
+  // Progressive, Orchestrated Timing Timeline
   useEffect(() => {
     if (!isInView) return;
-    // Phase 1: dot appears (immediate)
+    
+    // Phase 1: Tiny dormant white node fades in instantly
     setPhase(1);
-    const t2 = setTimeout(() => setPhase(2), 500);   // dot → button
-    const t3 = setTimeout(() => setPhase(3), 1000);   // branches grow
-    const t4 = setTimeout(() => setPhase(4), 1800);   // nodes appear
-    return () => { clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+
+    // Phase 2: Pure dot expands fluidly into the communications core (Form button)
+    const morphTimeout = setTimeout(() => setPhase(2), 1200);
+
+    // Phase 3: Pathways gracefully propagate outwards
+    const pathTimeout = setTimeout(() => setPhase(3), 2600);
+
+    // Phase 4: Destination communication nodes solidify
+    const nodeTimeout = setTimeout(() => setPhase(4), 4200);
+
+    return () => {
+      clearTimeout(morphTimeout);
+      clearTimeout(pathTimeout);
+      clearTimeout(nodeTimeout);
+    };
   }, [isInView]);
 
-  const mouseX = useSpring(0, { stiffness: 100, damping: 30 });
-  const mouseY = useSpring(0, { stiffness: 100, damping: 30 });
+  // Spring-Smoothed Cursor Micro-Reactivity for Ambient Sway
+  const mouseX = useSpring(0, { stiffness: 40, damping: 25 });
+  const mouseY = useSpring(0, { stiffness: 40, damping: 25 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!nexusRef.current) return;
       const rect = nexusRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) / 25;
-      const y = (e.clientY - rect.top - rect.height / 2) / 25;
+      const x = (e.clientX - rect.left - rect.width / 2) / 50;
+      const y = (e.clientY - rect.top - rect.height / 2) / 50;
       mouseX.set(x);
       mouseY.set(y);
     };
@@ -132,90 +165,131 @@ function NeuralNexus() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
-  const cx = 250, cy = 250, r = 160;
+  // Generates custom organic Bezier curve string
+  const getBezierPath = (angle: number, offset: number) => {
+    const rad = (angle) * (Math.PI / 180);
+    const r = baseRadius + offset;
+    const ex = cx + r * Math.cos(rad);
+    const ey = cy + r * Math.sin(rad);
+    
+    // Control point pulled slightly inward and rotated for natural curvature
+    const midRad = (angle + (angle > -90 ? -15 : 15)) * (Math.PI / 180);
+    const cpR = r * 0.5;
+    const cpx = cx + cpR * Math.cos(midRad);
+    const cpy = cy + cpR * Math.sin(midRad);
+
+    return {
+      d: `M ${cx} ${cy} Q ${cpx} ${cpy} ${ex} ${ey}`,
+      ex,
+      ey
+    };
+  };
 
   return (
     <div 
       ref={nexusRef} 
-      className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px] flex items-center justify-center"
+      className="relative w-[320px] h-[320px] md:w-[500px] md:h-[500px] flex items-center justify-center"
       onMouseEnter={() => setCursorState("nexus")}
       onMouseLeave={() => setCursorState("default")}
     >
-      {/* Concentric pulse waves */}
-      {phase >= 2 && [0, 1, 2].map((i) => (
+      {/* Silent breathing concentric pulses to establish depth */}
+      {phase >= 2 && [0, 1].map((i) => (
         <motion.div 
           key={i}
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: [0.5, 2.5], opacity: [0, 0.1, 0] }}
-          transition={{ duration: 6, repeat: Infinity, delay: i * 2, ease: "linear" }}
-          className="absolute inset-0 rounded-full border border-white/20 pointer-events-none"
+          initial={{ scale: 0.4, opacity: 0 }}
+          animate={{ 
+            scale: [0.4, 2], 
+            opacity: [0, 0.06, 0] 
+          }}
+          transition={{ 
+            duration: 9, 
+            repeat: Infinity, 
+            delay: i * 4.5, 
+            ease: "easeInOut" 
+          }}
+          className="absolute rounded-full border border-white/10 pointer-events-none w-full h-full"
+          style={{
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            marginTop: "70px" // Account for cy=320 offset
+          }}
         />
       ))}
 
-      {/* Rotating dashed orbit */}
-      {phase >= 2 && (
-        <motion.div 
-          style={{ x: mouseX, y: mouseY }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 rounded-full border border-dashed border-white/5 pointer-events-none z-0" 
-        />
-      )}
-
-      {/* SVG branches - grow from center to nodes */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 500 500">
+      {/* Fluid, Curved Neural Pathways */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible" viewBox="0 0 500 500">
         <defs>
-          <linearGradient id="branchGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+          {/* Elegant gradients for flowing signals */}
+          <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="rgba(255,255,255,0.0)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.6)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.0)" />
+            <stop offset="40%" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.8)" />
           </linearGradient>
-          <filter id="lineGlow">
-            <feGaussianBlur stdDeviation="2" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          <filter id="neuralGlow">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
           </filter>
         </defs>
-        
+
         {nodes.map((node, i) => {
-          const rad = (node.angle - 90) * (Math.PI / 180);
-          const nx = cx + r * Math.cos(rad);
-          const ny = cy + r * Math.sin(rad);
+          const pathData = getBezierPath(node.angle, node.radiusOffset);
           const isActive = activeNode === node.id;
-          
+
           return (
-            <g key={`branch-${node.id}`}>
-              {/* Base branch line */}
-              <motion.line 
-                x1={cx} y1={cy} x2={nx} y2={ny}
-                stroke="rgba(255,255,255,0.08)"
+            <g key={`neural-branch-${node.id}`}>
+              {/* Dormant ambient pathway */}
+              <motion.path
+                d={pathData.d}
+                stroke="rgba(255,255,255,0.04)"
                 strokeWidth="1"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={phase >= 3 ? { pathLength: 1, opacity: 1 } : {}}
-                transition={{ duration: 0.6, delay: i * 0.12, ease: [0.32, 0.72, 0, 1] }}
+                fill="none"
+                initial={{ pathLength: 0 }}
+                animate={phase >= 3 ? { pathLength: 1 } : {}}
+                transition={{ 
+                  duration: 1.8, 
+                  delay: i * 0.25, 
+                  ease: smoothEase 
+                }}
               />
-              {/* Active glow line */}
-              {isActive && (
-                <motion.line 
-                  x1={cx} y1={cy} x2={nx} y2={ny}
-                  stroke="url(#branchGlow)"
-                  strokeWidth="2"
-                  filter="url(#lineGlow)"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: [0, 1], opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 0.7, repeat: Infinity, ease: "circOut" }}
-                />
-              )}
+
+              {/* Intelligent active propagation curve */}
+              <motion.path
+                d={pathData.d}
+                stroke="url(#pathGradient)"
+                strokeWidth={isActive ? "1.5" : "1"}
+                fill="none"
+                filter={isActive ? "url(#neuralGlow)" : undefined}
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={
+                  phase === 3 
+                    ? { pathLength: [0, 1], opacity: [0, 0.7, 0] } 
+                    : isActive 
+                      ? { pathLength: 1, opacity: 0.6 } 
+                      : { pathLength: 1, opacity: 0 }
+                }
+                transition={
+                  phase === 3 
+                    ? { duration: 2.2, delay: i * 0.25, ease: "easeInOut" } 
+                    : { duration: 0.6, ease: smoothEase }
+                }
+              />
             </g>
           );
         })}
       </svg>
 
-      {/* Social nodes at branch endpoints */}
+      {/* Spatial Node Synapses (Mapped precisely to end of bezier paths) */}
       {nodes.map((node, i) => {
-        const rad = (node.angle - 90) * (Math.PI / 180);
-        const leftPercent = 50 + (r / 5) * Math.cos(rad);
-        const topPercent = 50 + (r / 5) * Math.sin(rad);
+        const pathData = getBezierPath(node.angle, node.radiusOffset);
         const NodeIcon = node.icon;
+        
+        // Convert coordinates to percentage dynamically for absolute containment
+        const leftPercent = (pathData.ex / 500) * 100;
+        const topPercent = (pathData.ey / 500) * 100;
 
         return (
           <motion.a
@@ -223,9 +297,13 @@ function NeuralNexus() {
             href={node.href}
             target={node.id !== "mail" ? "_blank" : undefined}
             rel="noopener noreferrer"
-            initial={{ scale: 0, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={phase >= 4 ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 0.4, delay: i * 0.1, ease: [0.32, 0.72, 0, 1] }}
+            transition={{ 
+              duration: 1, 
+              delay: i * 0.15, 
+              ease: smoothEase 
+            }}
             onMouseEnter={() => { setActiveNode(node.id); setCursorState("link"); }}
             onMouseLeave={() => { setActiveNode(null); setCursorState("nexus"); }}
             style={{
@@ -234,65 +312,100 @@ function NeuralNexus() {
               top: `${topPercent}%`,
               transform: "translate(-50%, -50%)",
             }}
-            className="relative z-20 w-14 h-14 md:w-18 md:h-18 rounded-full bg-[#050505] border border-white/10 flex items-center justify-center group hover:bg-white hover:border-transparent transition-colors duration-500"
-            whileHover={{ scale: 1.15 }}
+            className="z-20 w-12 h-12 md:w-[60px] md:h-[60px] rounded-full bg-[#030303] border border-white/[0.08] flex items-center justify-center group hover:bg-white hover:border-white transition-all duration-700 shadow-[0_0_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
           >
-            <div className="text-white/60 group-hover:text-black transition-colors duration-500">
-              <NodeIcon className="w-5 h-5" />
+            <div className="text-white/50 group-hover:text-black transition-colors duration-500">
+              <NodeIcon className="w-4 h-4 md:w-[18px] md:h-[18px]" />
             </div>
-            <div className="absolute -bottom-7 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[9px] font-mono tracking-widest text-white/50 uppercase whitespace-nowrap">
+            
+            {/* Restrained, elegant micro-label */}
+            <div className="absolute -bottom-8 opacity-0 pointer-events-none group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-500 text-[8px] font-mono tracking-[0.25em] text-white/40 uppercase whitespace-nowrap">
               {node.label}
             </div>
           </motion.a>
         );
       })}
 
-      {/* Center: Dot → Submit Button */}
-      <CenterButton phase={phase} />
+      {/* Communication Core (Positioned at architectural anchor point) */}
+      <div 
+        style={{
+          position: "absolute",
+          left: `${(cx / 500) * 100}%`,
+          top: `${(cy / 500) * 100}%`,
+          transform: "translate(-50%, -50%)"
+        }}
+        className="z-30 flex items-center justify-center"
+      >
+        <CenterCommunicationCore phase={phase} />
+      </div>
     </div>
   );
 }
 
-function CenterButton({ phase }: { phase: number }) {
+function CenterCommunicationCore({ phase }: { phase: number }) {
   const { setCursorState } = useCursor();
   const [formOpen, setFormOpen] = useState(false);
 
   return (
     <>
-      {/* Phase 1: Small white dot */}
+      {/* Phase 1: Dormant White Activation Node */}
       <motion.div
-        className="absolute z-30 rounded-full bg-white pointer-events-none"
-        initial={{ width: 0, height: 0, opacity: 0 }}
+        initial={{ scale: 0, opacity: 0 }}
         animate={
           phase === 1 
-            ? { width: 12, height: 12, opacity: 1 } 
+            ? { 
+                scale: [0.8, 1.1, 1], 
+                opacity: [0, 0.8, 0.5],
+              } 
             : phase >= 2 
-              ? { width: 0, height: 0, opacity: 0 } 
+              ? { scale: 0, opacity: 0 } 
               : {}
         }
-        transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-        style={{ left: "50%", top: "50%", x: "-50%", y: "-50%" }}
+        transition={
+          phase === 1 
+            ? {
+                scale: { duration: 2.5, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" },
+                opacity: { duration: 1.2, ease: smoothEase }
+              }
+            : { duration: 0.8, ease: smoothEase }
+        }
+        className="absolute w-1.5 h-1.5 rounded-full bg-white z-40 pointer-events-none filter blur-[0.5px]"
       />
 
-      {/* Phase 2+: Full button */}
+      {/* Phase 2+: Central Functional Communication Core */}
       <motion.button
         onClick={() => setFormOpen(true)}
         onMouseEnter={() => setCursorState("hover")}
         onMouseLeave={() => setCursorState("nexus")}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={phase >= 2 ? { scale: 1, opacity: 1 } : {}}
-        transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-        whileHover={{ scale: 1.05 }}
-        className="relative z-30 w-28 h-28 md:w-36 md:h-36 rounded-full bg-black border border-white/20 flex flex-col items-center justify-center gap-2 group shadow-[0_0_80px_rgba(255,255,255,0.03)] hover:shadow-[0_0_100px_rgba(255,255,255,0.08)] hover:bg-white hover:text-black transition-all duration-700"
+        initial={{ scale: 0, opacity: 0, filter: "blur(8px)" }}
+        animate={
+          phase >= 2 
+            ? { scale: 1, opacity: 1, filter: "blur(0px)" } 
+            : {}
+        }
+        transition={{ duration: 1.6, ease: smoothEase }}
+        whileHover={{ scale: 1.03 }}
+        className="relative w-28 h-28 md:w-[130px] md:h-[130px] rounded-full bg-black border border-white/10 flex flex-col items-center justify-center gap-2.5 group shadow-[0_0_60px_rgba(255,255,255,0.01)] hover:shadow-[0_0_80px_rgba(255,255,255,0.06)] hover:border-white/20 hover:bg-[#040404] transition-all duration-1000 overflow-hidden"
       >
-        <div className="absolute inset-0 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
-        <Send className="w-5 h-5 md:w-6 md:h-6 text-white/80 group-hover:text-black transition-colors mb-1" />
-        <span className="text-white/50 group-hover:text-black text-[8px] md:text-[9px] font-mono uppercase tracking-[0.2em] transition-colors">
-          Send Message
-        </span>
+        {/* Soft micro-sheen sweeping overlay */}
+        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.04),transparent_60%)] pointer-events-none" />
+
+        <motion.div
+          animate={phase >= 3 ? { y: [0, -2, 0] } : {}}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center relative z-10"
+        >
+          <Send className="w-[18px] h-[18px] text-white/60 group-hover:text-white transition-colors duration-500 mb-2 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]" />
+          <span className="text-white/40 group-hover:text-white text-[8px] font-mono uppercase tracking-[0.25em] transition-colors duration-700 font-medium">
+            Initiate
+          </span>
+        </motion.div>
+
+        {/* Delicate ring boundary sweep */}
+        <div className="absolute inset-0 rounded-full border border-white/5 scale-[1.08] opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-1000" />
       </motion.button>
 
-      {/* Contact Form Modal */}
+      {/* Integrated Modal System */}
       {formOpen && <ContactFormModal onClose={() => setFormOpen(false)} />}
     </>
   );
@@ -304,12 +417,11 @@ function ContactFormModal({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Build mailto link with form data
-    const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
+    const subject = encodeURIComponent(`Architecture Inquiry from ${formData.name}`);
     const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`);
     window.open(`mailto:hello@example.com?subject=${subject}&body=${body}`, "_self");
     setSubmitted(true);
-    setTimeout(onClose, 2000);
+    setTimeout(onClose, 2200);
   };
 
   return (
@@ -317,63 +429,75 @@ function ContactFormModal({ onClose }: { onClose: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[10000] flex items-center justify-center px-4"
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="fixed inset-0 z-[1000] flex items-center justify-center px-6 pointer-events-auto"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      {/* Ambient Deep Mask */}
+      <div className="absolute inset-0 bg-black/85 backdrop-blur-md transition-all duration-500" />
       
       <motion.form
-        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        initial={{ scale: 0.96, opacity: 0, y: 15 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+        exit={{ scale: 0.98, opacity: 0, y: 10 }}
+        transition={{ duration: 0.6, ease: smoothEase }}
         onSubmit={handleSubmit}
-        className="relative z-10 w-full max-w-md bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col gap-5"
+        className="relative z-10 w-full max-w-[420px] bg-[#050505] border border-white/10 rounded-3xl p-7 md:p-9 flex flex-col gap-6 shadow-[0_25px_80px_-20px_rgba(0,0,0,0.9)]"
       >
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-bold tracking-tight">Direct Transmission</h3>
-          <button type="button" onClick={onClose} className="text-white/40 hover:text-white text-sm transition-colors">✕</button>
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="text-sm font-mono tracking-[0.2em] uppercase text-white/70">Establish Vector</h3>
+          <button 
+            type="button" 
+            onClick={onClose} 
+            className="text-white/30 hover:text-white text-xs transition-colors p-1"
+          >
+            ✕
+          </button>
         </div>
 
         {submitted ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 text-center">
-            <p className="text-white/60 font-mono text-sm">Message routed successfully.</p>
+          <motion.div 
+            initial={{ opacity: 0, filter: "blur(4px)" }} 
+            animate={{ opacity: 1, filter: "blur(0px)" }} 
+            className="py-14 text-center"
+          >
+            <p className="text-white/50 font-mono text-[10px] tracking-[0.2em] uppercase">Transmission complete.</p>
           </motion.div>
         ) : (
           <>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Name</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/30 font-medium">Identity</label>
               <input
                 type="text" required value={formData.name}
                 onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-white/30 transition-colors"
-                placeholder="Your name"
+                className="bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/15 outline-none focus:border-white/25 transition-colors font-light tracking-wide"
+                placeholder="Name or organization"
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Email</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/30 font-medium">Route</label>
               <input
                 type="email" required value={formData.email}
                 onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-white/30 transition-colors"
-                placeholder="your@email.com"
+                className="bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/15 outline-none focus:border-white/25 transition-colors font-light tracking-wide"
+                placeholder="Email address"
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Message</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/30 font-medium">Message Core</label>
               <textarea
                 required rows={4} value={formData.message}
                 onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none focus:border-white/30 transition-colors resize-none"
-                placeholder="Your message..."
+                className="bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/15 outline-none focus:border-white/25 transition-colors resize-none font-light tracking-wide leading-relaxed"
+                placeholder="Detailed objective..."
               />
             </div>
             <button
               type="submit"
-              className="mt-2 w-full py-3 bg-white text-black rounded-full font-medium text-sm tracking-wide hover:bg-white/90 transition-colors flex items-center justify-center gap-2"
+              className="mt-2 w-full py-3.5 bg-white text-black rounded-full font-medium text-xs tracking-[0.15em] uppercase hover:bg-white/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 font-mono"
             >
-              <Send className="w-4 h-4" />
-              Transmit Message
+              <Send className="w-3.5 h-3.5" />
+              Transmit Link
             </button>
           </>
         )}
